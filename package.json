@@ -2,7 +2,7 @@
   "name": "rubyisms",
   "version": "0.1.2",
   "description": "Prototype extensions.",
-  "main": "index.js",
+  "main": "rubyisms.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Oka-/rubyisms"
