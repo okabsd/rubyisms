@@ -2,7 +2,7 @@
 // http://oka.io
 // MIT, 2015
 
-;(function () {
+;(function ($) {
 'use strict';
 
 var def = Object.defineProperties,
@@ -10,76 +10,91 @@ var def = Object.defineProperties,
     AP = Array.prototype,
     SP = String.prototype,
     NP = Number.prototype;
+
+function $(g, s) {return {get: g, set: s};}
     
-// Getters
 def(SP, {
-  capitalize: {
-    get: function () {
-      return this.substring(0, 1).toUpperCase() + this.substring(1);
-    }
-  },
-  chars: {
-    get: function () {
-      return this.split('');
-    }
-  },
-  chr: {
-    get: function () {
-      return this.substring(0, 1);
-    }
-  },
-  downcase: {
-    get: function () {
-      return this.toLowerCase();
-    }
-  },
-  empty: {
-    get: function () {
-      return this.length < 1;
-    }
-  },
-  reverse: {
-    get: function () {
-      var r = '', i = this.length - 1, e;
-      for (e = 0; i >= e; i--) r += this[i];
-      return r;
-    }
-  },
-  upcase: {
-    get: function () {
-      return this.toUpperCase();
-    }
-  }
+  capitalize: $(function () {
+    return this.substring(0, 1).toUpperCase() + this.substring(1);
+  }),
+  chars: $(function () {
+    return this.split('');
+  }),
+  chr: $(function () {
+    return this.substring(0, 1);
+  }),
+  downcase: $(function () {
+    return this.toLowerCase();
+  }),
+  empty: $(function () {
+    return this.length < 1;
+  }),
+  reverse: $(function () {
+    var r = '', i = this.length - 1, e;
+    for (e = 0; i >= e; i--) r += this[i];
+    return r;
+  }),
+  upcase: $(function () {
+    return this.toUpperCase();
+  })
 });
 
 def(AP, {
-  clear: {
-    get: function () {
-      while (this.length > 0) this.pop();
-      return this;
-    }
-  },
-  compact: {
-    get: function () {
-      return this.filter(function (e) {
-        return (typeof e !== 'undefined');
-      });
-    }
-  },
-  uniq: {
-    get: function () {
-      var c = {};
-      return this.filter(function (e) {
-        return (c.hasOwnProperty(e) ? false : c[e] = true);
-      });
-    }
-  }
+  clear: $(function () {
+    while (this.length > 0) this.pop(); return this;
+  }),
+  compact: $(function () {
+    return this.filter(function (e) {
+      return (typeof e !== 'undefined');
+    });
+  }),
+  uniq: $(function () {
+    var c = {};
+    return this.filter(function (e) {
+      return (c.hasOwnProperty(e) ? false : c[e] = true);
+    });
+  }),
 });
 
-def(OP, {});
-def(NP, {});
+def(OP, {
+  array: $(function () {
+    return Array.isArray(this);
+  }),
+  bool: $(function () {
+    return typeof this === 'boolean';
+  }),
+  numeric: $(function () {
+    return typeof this === 'number' && this === this;
+  }),
+  object: $(function () {
+    return !Array.isArray(this) && typeof this === 'object';
+  }),
+  size: $(function () {
+    if (Array.isArray(this) || typeof this === 'string') return this.length;
+    else if (typeof this === 'object') return Object.keys(this).length;
+  }),
+  string: $(function () {
+    return typeof this === 'string';
+  })
+});
 
-// Methods
+def(NP, {
+  abs: $(function () {
+    return Math.abs(this);
+  }),
+  finite: $(function () {
+    return isFinite(this);
+  }),
+  floor: $(function () {
+    return Math.floor(this);
+  }),
+  integer: $(function () {
+    return this.toFixed() == this;
+  }),
+  polar: $(function () {
+    return [Math.abs(this), (this > 0 ? 0 : Math.PI)];
+  })
+});
 
 var _String = {
   _p: SP,
@@ -140,7 +155,10 @@ var _Object = {
 };
 
 var _Number = {
-  _p: NP
+  _p: NP,
+  eql: function (o) {
+    return this === o;
+  }
 };
 
 function buildPrototypes(e) {
