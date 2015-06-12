@@ -6,38 +6,17 @@
 'use strict';
 
 var def = Object.defineProperties,
-    OP = Object.prototype,
     AP = Array.prototype,
-    SP = String.prototype,
-    NP = Number.prototype;
+    BP = Boolean.prototype,
+    FP = Function.prototype,
+    NP = Number.prototype,
+    OP = Object.prototype,
+    SP = String.prototype;
+    
 
 function $(g, s) {return {get: g, set: s};}
 
-def(SP, {
-  capitalize: $(function () {
-    return this.substring(0, 1).toUpperCase() + this.substring(1);
-  }),
-  chars: $(function () {
-    return this.split('');
-  }),
-  chr: $(function () {
-    return this.substring(0, 1);
-  }),
-  downcase: $(function () {
-    return this.toLowerCase();
-  }),
-  empty: $(function () {
-    return this.length < 1;
-  }),
-  reverse: $(function () {
-    var r = '', i = this.length - 1, e;
-    for (e = 0; i >= e; i--) r += this[i];
-    return r;
-  }),
-  upcase: $(function () {
-    return this.toUpperCase();
-  })
-});
+// Minor methods
 
 def(AP, {
   clear: $(function () {
@@ -54,6 +33,33 @@ def(AP, {
       return (c.hasOwnProperty(e) ? false : c[e] = true);
     });
   }),
+});
+
+def(BP, {});
+
+def(FP, {});
+
+def(NP, {
+  abs: $(function () {
+    return Math.abs(this);
+  }),
+  finite: $(function () {
+    return isFinite(this);
+  }),
+  floor: $(function () {
+    return Math.floor(this);
+  }),
+  integer: $(function () {
+    return this.toFixed() == this && this !== Infinity;
+  }),
+  polar: $(function () {
+    return (isFinite(this) && 
+    [Math.abs(this), (this < 0 ? Math.PI : 0)]) || 
+    undefined;
+  }),
+  round: $(function () {
+    return Math.round(this);
+  })
 });
 
 def(OP, {
@@ -84,35 +90,33 @@ def(OP, {
   })
 });
 
-def(NP, {
-  abs: $(function () {
-    return Math.abs(this);
+def(SP, {
+  capitalize: $(function () {
+    return this.substring(0, 1).toUpperCase() + this.substring(1);
   }),
-  finite: $(function () {
-    return isFinite(this);
+  chars: $(function () {
+    return this.split('');
   }),
-  floor: $(function () {
-    return Math.floor(this);
+  chr: $(function () {
+    return this.substring(0, 1);
   }),
-  integer: $(function () {
-    return this.toFixed() == this && this !== Infinity;
+  downcase: $(function () {
+    return this.toLowerCase();
   }),
-  polar: $(function () {
-    return (isFinite(this) && 
-    [Math.abs(this), (this < 0 ? Math.PI : 0)]) || 
-    undefined;
+  empty: $(function () {
+    return this.length < 1;
   }),
-  round: $(function () {
-    return Math.round(this);
+  reverse: $(function () {
+    var r = '', i = this.length - 1, e;
+    for (e = 0; i >= e; i--) r += this[i];
+    return r;
+  }),
+  upcase: $(function () {
+    return this.toUpperCase();
   })
 });
 
-var _String = {
-  _p: SP,
-  prepend: function (o) {
-    return o + this;
-  }
-};
+// Major methods
 
 var _Array = {
   _p: AP,
@@ -158,6 +162,18 @@ var _Array = {
   }
 };
 
+var _Boolean = {
+  _p: BP
+};
+
+var _Function = {
+  _p: FP
+};
+
+var _Number = {
+  _p: NP
+};
+
 var _Object = {
   _p: OP,
   eql: function (o) {
@@ -165,8 +181,11 @@ var _Object = {
   }
 };
 
-var _Number = {
-  _p: NP
+var _String = {
+  _p: SP,
+  prepend: function (o) {
+    return o + this;
+  }
 };
 
 function buildPrototypes(e) {
@@ -176,6 +195,6 @@ function buildPrototypes(e) {
   }
 }
 
-[_String, _Array, _Object, _Number].forEach(buildPrototypes);
+[_Array, _Boolean, _Function, _Number, _Object, _String].forEach(buildPrototypes);
 
 }());
