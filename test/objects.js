@@ -130,5 +130,4 @@ describe('Objects', function () {
       expect(s.eql(new String('foo'))).to.be.false;
     });
   });
-
 });
