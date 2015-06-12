@@ -8,8 +8,16 @@
     "url": "https://github.com/Oka-/rubyisms"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/test.js",
+    "testArrays": "mocha test/suites/arrays.js",
+    "testNumbers": "mocha test/suites/numbers.js",
+    "testObjects": "mocha test/suites/objects.js",
+    "testStrings": "mocha test/suites/strings.js"
   },
   "author": "Colin Hall-Coates <yo@oka.io> (http://oka.io)",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5"
+  }
 }

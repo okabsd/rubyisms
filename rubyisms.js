@@ -12,7 +12,7 @@ var def = Object.defineProperties,
     NP = Number.prototype;
 
 function $(g, s) {return {get: g, set: s};}
-    
+
 def(SP, {
   capitalize: $(function () {
     return this.substring(0, 1).toUpperCase() + this.substring(1);
@@ -70,8 +70,11 @@ def(OP, {
     return !Array.isArray(this) && typeof this === 'object';
   }),
   size: $(function () {
-    if (Array.isArray(this) || typeof this === 'string') return this.length;
+    if (Array.isArray(this) || 
+      typeof this === 'string' || 
+      typeof this === 'function') return this.length;
     else if (typeof this === 'object') return Object.keys(this).length;
+    else if (typeof this === 'number' && this === this) return this;
   }),
   string: $(function () {
     return typeof this === 'string';
