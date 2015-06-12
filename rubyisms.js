@@ -95,7 +95,7 @@ def(NP, {
     return Math.floor(this);
   }),
   integer: $(function () {
-    return this.toFixed() == this;
+    return this.toFixed() == this && this !== Infinity;
   }),
   polar: $(function () {
     return [Math.abs(this), (this > 0 ? 0 : Math.PI)];
