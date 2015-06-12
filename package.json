@@ -9,10 +9,10 @@
   },
   "scripts": {
     "test": "mocha test/test.js",
-    "testArrays": "mocha test/suites/arrays.js",
-    "testNumbers": "mocha test/suites/numbers.js",
-    "testObjects": "mocha test/suites/objects.js",
-    "testStrings": "mocha test/suites/strings.js"
+    "test-arrays": "mocha test/suites/arrays.js",
+    "test-numbers": "mocha test/suites/numbers.js",
+    "test-objects": "mocha test/suites/objects.js",
+    "test-strings": "mocha test/suites/strings.js"
   },
   "author": "Colin Hall-Coates <yo@oka.io> (http://oka.io)",
   "license": "MIT",
