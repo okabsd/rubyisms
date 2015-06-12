@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="http://i.imgur.com/Gx7OFGO.png" />
+  <a href="https://www.npmjs.com/package/rubyisms">
+    <img src="http://i.imgur.com/Gx7OFGO.png" />
+  </a>
 </p>
 
 # Rubyisms
@@ -12,8 +14,6 @@ A highly experimental set of prototype extensions for types in ES5 JavaScript.
 
 ## install
 
-Using [npm](npm).
+Using [npm](https://www.npmjs.com/).
 
     npm install rubyisms
-
-  [npm]: https://www.npmjs.com/
