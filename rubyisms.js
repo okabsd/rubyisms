@@ -98,7 +98,9 @@ def(NP, {
     return this.toFixed() == this && this !== Infinity;
   }),
   polar: $(function () {
-    return [Math.abs(this), (this > 0 ? 0 : Math.PI)];
+    return (isFinite(this) && 
+    [Math.abs(this), (this < 0 ? Math.PI : 0)]) || 
+    undefined;
   }),
   round: $(function () {
     return Math.round(this);
