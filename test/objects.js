@@ -7,9 +7,9 @@ require('../');
 
 describe('Objects', function () {
   // Minor methods
-  var a = [1, 'bar', 3, undefined],
+  var a = [1, 'bar', 3, undefined, 5],
       b = true,
-      f = function () {},
+      f = function (one, two) {},
       n = 5,
       o = {a: 1, b: 2},
       s = 'foo';
@@ -73,9 +73,25 @@ describe('Objects', function () {
 
   describe('#size', function () {
     it('should return the length of strings and arrays', function () {
-
+      expect(a.size).to.equal(5);
+      expect(s.size).to.equal(3);
     });
+
+    it('should return the number of arguments a function has defined', function () {
+      expect(f.size).to.equal(2);
+    });
+
+    it('should return the length of an objects properties', function () {
+      expect(o.size).to.equal(2)
+    });
+
+    it('should return a numeric value\'s value', function () {
+      expect(n.size).to.equal(5);
+      expect(NaN.size).to.equal(undefined);
+      expect(Infinity.size).to.equal(Infinity);
+    })
   });
+
 
   describe('#string', function () {
     it('should return true if object is string, false otherwise', function () {
@@ -86,6 +102,32 @@ describe('Objects', function () {
       expect(o.string).to.be.false;
       expect(s.string).to.be.true;
       expect(new String('hello').string).to.be.true;
+    });
+  });
+
+  // Major methods
+
+  describe('#eql()', function () {
+    it('should compare objects strictly and return a boolean', function () {
+      expect(a.eql(a)).to.be.true;
+      expect(a.eql([1, 'bar', 3, undefined, 5])).to.be.false;
+
+      expect(b.eql(b)).to.be.true;
+      expect(b.eql(false)).to.be.false;
+
+      expect(f.eql(f)).to.be.true;
+      expect(f.eql(function () {})).to.be.false;
+
+      expect(n.eql(n)).to.be.true;
+      expect(n.eql(5)).to.be.true;
+      expect(n.eql('5')).to.be.false;
+
+      expect(o.eql(o)).to.be.true;
+      expect(o.eql({a: 1, b: 2})).to.be.false;
+
+      expect(s.eql(s)).to.be.true;
+      expect(s.eql('foo')).to.be.true;
+      expect(s.eql(new String('foo'))).to.be.false;
     });
   });
 
