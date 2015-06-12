@@ -99,6 +99,9 @@ def(NP, {
   }),
   polar: $(function () {
     return [Math.abs(this), (this > 0 ? 0 : Math.PI)];
+  }),
+  round: $(function () {
+    return Math.round(this);
   })
 });
 
