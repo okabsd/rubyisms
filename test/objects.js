@@ -105,6 +105,19 @@ describe('Objects', function () {
     });
   });
 
+  describe('#type', function () {
+    it('should return a type string', function () {
+      expect(a.type).to.equal('array');
+      expect(b.type).to.equal('boolean');
+      expect(f.type).to.equal('function');
+      expect(n.type).to.equal('number');
+      expect(o.type).to.equal('object');
+      expect(s.type).to.equal('string');
+      expect(NaN.type).to.equal('NaN');
+      expect(Infinity.type).to.equal('number');
+    });
+  });
+
   // Major methods
 
   describe('#eql()', function () {

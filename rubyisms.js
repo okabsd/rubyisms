@@ -35,7 +35,11 @@ def(AP, {
   }),
 });
 
-def(BP, {});
+def(BP, {
+  not: $(function () {
+    return !this;
+  })
+});
 
 def(FP, {});
 
@@ -64,19 +68,19 @@ def(NP, {
 
 def(OP, {
   array: $(function () {
-    return Array.isArray(this);
+    return OP.toString.call(this) === '[object Array]';
   }),
   bool: $(function () {
-    return typeof this === 'boolean';
+    return OP.toString.call(this) === '[object Boolean]';
   }),
   func: $(function () {
-    return typeof this === 'function';
+    return OP.toString.call(this) === '[object Function]';
   }),
   numeric: $(function () {
-    return typeof this === 'number' && this === this;
+    return OP.toString.call(this) === '[object Number]' && this === this;
   }),
   object: $(function () {
-    return !Array.isArray(this) && typeof this === 'object';
+    return OP.toString.call(this) === '[object Object]';
   }),
   size: $(function () {
     if (Array.isArray(this) || 
@@ -86,7 +90,25 @@ def(OP, {
     else if (typeof this === 'number' && this === this) return this;
   }),
   string: $(function () {
-    return typeof this === 'string' || this instanceof String;
+    return OP.toString.call(this) === '[object String]';
+  }),
+  type: $(function () {
+    var t = OP.toString.call(this)
+    switch(t) {
+      case '[object Array]':
+        return 'array';
+      case '[object Boolean]':
+        return 'boolean';
+      case '[object Function]':
+        return 'function';
+      case '[object Number]':
+        if (this === this) return 'number';
+        else return 'NaN';
+      case '[object Object]':
+        return 'object';
+      case '[object String]':
+        return 'string';
+    }
   })
 });
 

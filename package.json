@@ -8,8 +8,10 @@
     "url": "https://github.com/Oka-/rubyisms"
   },
   "scripts": {
-    "test": "npm run test-arrays && npm run test-numbers && npm run test-objects && npm run test-strings",
+    "test": "npm run test-arrays && npm run test-booleans && npm run test-functions && npm run test-numbers && npm run test-objects && npm run test-strings",
     "test-arrays": "mocha test/arrays.js",
+    "test-booleans": "mocha test/booleans.js",
+    "test-functions": "mocha test/functions.js",
     "test-numbers": "mocha test/numbers.js",
     "test-objects": "mocha test/objects.js",
     "test-strings": "mocha test/strings.js"
