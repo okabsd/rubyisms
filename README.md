@@ -8,11 +8,11 @@
 
 **Ruby style ES5 prototype extensions**
 
-## info
+## Info
 
-A highly experimental set of prototype extensions for types in ES5 JavaScript.
+A highly experimental set of prototype extensions for native types in ES5 JavaScript.
 
-## install
+## Install
 
 Using [npm](https://www.npmjs.com/).
 
