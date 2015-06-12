@@ -93,22 +93,8 @@ def(OP, {
     return OP.toString.call(this) === '[object String]';
   }),
   type: $(function () {
-    var t = OP.toString.call(this)
-    switch(t) {
-      case '[object Array]':
-        return 'array';
-      case '[object Boolean]':
-        return 'boolean';
-      case '[object Function]':
-        return 'function';
-      case '[object Number]':
-        if (this === this) return 'number';
-        else return 'NaN';
-      case '[object Object]':
-        return 'object';
-      case '[object String]':
-        return 'string';
-    }
+    var t = OP.toString.call(this).match(/\w+(?=\])/)[0].toLowerCase();
+    return (t === 'number' && this !== this ? 'NaN' : t);
   })
 });
 

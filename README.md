@@ -2,7 +2,7 @@
   <img src="http://i.imgur.com/Gx7OFGO.png" />
 </p>
 
-# rubyisms
+# Rubyisms
 
 **Ruby style ES5 prototype extensions**
 
