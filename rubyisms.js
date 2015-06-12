@@ -63,6 +63,9 @@ def(OP, {
   bool: $(function () {
     return typeof this === 'boolean';
   }),
+  func: $(function () {
+    return typeof this === 'function';
+  }),
   numeric: $(function () {
     return typeof this === 'number' && this === this;
   }),
@@ -77,7 +80,7 @@ def(OP, {
     else if (typeof this === 'number' && this === this) return this;
   }),
   string: $(function () {
-    return typeof this === 'string';
+    return typeof this === 'string' || this instanceof String;
   })
 });
 
