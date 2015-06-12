@@ -101,9 +101,6 @@ def(NP, {
 
 var _String = {
   _p: SP,
-  eql: function (o) {
-    return this === o;
-  },
   prepend: function (o) {
     return o + this;
   }
@@ -154,14 +151,14 @@ var _Array = {
 };
 
 var _Object = {
-  _p: OP
-};
-
-var _Number = {
-  _p: NP,
+  _p: OP,
   eql: function (o) {
     return this === o;
   }
+};
+
+var _Number = {
+  _p: NP
 };
 
 function buildPrototypes(e) {

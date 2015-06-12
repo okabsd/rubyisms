@@ -104,4 +104,17 @@ describe('Strings', function () {
   });
 
   // Major methods
+
+  describe('#prepend()', function () {
+    var foo = 'world',
+        bar = foo.prepend('hello ');
+
+    it('should return a string with given value appended to the beginning', function () {
+      bar.should.equal('hello world');
+    });
+
+    it('should not affect the original', function () {
+      foo.should.equal('world');
+    });
+  });
 });
