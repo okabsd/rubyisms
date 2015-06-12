@@ -8,11 +8,11 @@
     "url": "https://github.com/Oka-/rubyisms"
   },
   "scripts": {
-    "test": "mocha test/test.js",
-    "test-arrays": "mocha test/suites/arrays.js",
-    "test-numbers": "mocha test/suites/numbers.js",
-    "test-objects": "mocha test/suites/objects.js",
-    "test-strings": "mocha test/suites/strings.js"
+    "test": "npm run test-arrays && npm run test-numbers && npm run test-objects && npm run test-strings",
+    "test-arrays": "mocha test/arrays.js",
+    "test-numbers": "mocha test/numbers.js",
+    "test-objects": "mocha test/objects.js",
+    "test-strings": "mocha test/strings.js"
   },
   "author": "Colin Hall-Coates <yo@oka.io> (http://oka.io)",
   "license": "MIT",
