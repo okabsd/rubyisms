@@ -120,6 +120,9 @@ minor(Number.prototype, {
   ceil: function () {
     return Math.ceil(this);
   },
+  even: function () {
+    return this % 2 === 0;
+  },
   finite: function () {
     return isFinite(this);
   },
@@ -131,6 +134,9 @@ minor(Number.prototype, {
   },
   nonzero: function () {
     return (this !== 0 ? this: null);
+  },
+  odd: function () {
+    return this.toFixed() == this && this % 2 !== 0;
   },
   polar: function () {
     return (isFinite(this) && 
@@ -286,6 +292,13 @@ major(Object.prototype, {
 });
 
 major(String.prototype, {
+  each: function (fn, after) {
+    if (typeof fn !== 'function') throw new TypeError('Expected function');
+    for (var i = 0; i < this.length; i++) {
+      fn.call(this, this[i], i);
+    }
+    return (typeof after === 'function'? after.call(this) : after);
+  },
   prepend: function (o) {
     return o + this;
   }

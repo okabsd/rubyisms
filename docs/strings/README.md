@@ -18,7 +18,7 @@ String methods can **not** be overridden on instances.
 -- Returns the first character in the string.
 
 - `#downcase`
--- Alias of `String.prototype.toLowerCase()`.
+-- Returns string with all character to lowercase.
 
 - `#empty`
 -- Returns `true` if string length is `0`, `false` otherwise
@@ -33,9 +33,12 @@ String methods can **not** be overridden on instances.
 -- Returns a new string with lowercase character turned uppercase, and uppercase characters turned lowercase.
 
 - `#upcase`
--- Alias of `String.prototype.toUpperCase()`.
+-- Returns string with all characters to uppercase;
 
 ## Major
+
+- `#each(fn, after)`
+-- Iterates through the string. *fn* is passed the current character, and the index. Optional second parameter: if *after* is a function, the return value from `#each` is the return value of invoking that function. If *after* is anything else, that is the return value.
 
 - `#prepend(val)`
 -- Returns a new string with *val* added to the beginning of the string.

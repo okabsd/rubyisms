@@ -13,7 +13,9 @@ describe('Numbers', function () {
       neg = -5,
       negf = -3.5,
       pos = 7,
-      posf = 12.4;
+      posf = 12.4,
+      even = 10,
+      odd = 11;
 
   describe('#abs', function () {
     it('should return the absolute value of the number', function () {
@@ -48,6 +50,14 @@ describe('Numbers', function () {
       expect(one.ceil).to.equal(1);
       expect(posf.ceil).to.equal(13);
       expect(negf.ceil).to.equal(-3);
+    });
+  });
+
+  describe('#even', function () {
+    it('should return true if value is even, false otherwise', function () {
+      expect(even.even).to.be.true;
+      expect(odd.even).to.be.false;
+      expect(posf.even).to.be.false;
     });
   });
 
@@ -91,6 +101,14 @@ describe('Numbers', function () {
       expect(negf.nonzero).to.equal(negf);
     });
   });
+
+  describe('#odd', function () {
+    it('should return true if value is odd, false otherwise', function () {
+      expect(odd.odd).to.be.true;
+      expect(even.odd).to.be.false;
+      expect(posf.odd).to.be.false;
+    });
+  }); 
 
   describe('#polar', function () {
     it('should return [absolute value of number, (PI if negative, 0 otherwise)]', function () {

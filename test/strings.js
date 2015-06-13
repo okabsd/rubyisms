@@ -132,6 +132,23 @@ describe('Strings', function () {
 
   // Major methods
 
+  describe('#each()', function () {
+    var foo = 'hello',
+        out = [];
+        foo.each(function (e) {
+          out.push(e);
+        });
+
+    it('should it iterate through the string', function () {
+      expect(out.join('')).to.equal(foo);
+      out.should.deep.equal(['h', 'e', 'l', 'l', 'o']);
+    });
+
+    it('should not affect the original', function () {
+      foo.should.equal('hello');
+    })
+  });
+
   describe('#prepend()', function () {
     var foo = 'world',
         bar = foo.prepend('hello ');
