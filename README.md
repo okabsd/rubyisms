@@ -8,7 +8,7 @@
 
 **Ruby style ES5 prototype extensions**
 
-[![NPM version][npm-image]][npm-url] [![Downloads][npm-downloads]][npm-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][npm-downloads]][npm-url] [![Build Status][travis-build]][travis-url]
 
 ## Info
 
@@ -27,3 +27,6 @@ Full list of methods [here](https://github.com/Oka-/rubyisms/tree/master/docs).
 [npm-url]: https://www.npmjs.com/package/rubyisms
 [npm-image]: http://img.shields.io/npm/v/rubyisms.svg
 [npm-downloads]: http://img.shields.io/npm/dm/rubyisms.svg
+
+[travis-url]: https://travis-ci.org/Oka-/rubyisms
+[travis-build]: https://travis-ci.org/Oka-/rubyisms.svg?branch=master
