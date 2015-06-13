@@ -2,7 +2,7 @@
 
 Object methods can be overridden on prototypes.
 Object methods can be overridden on instances.
-Object methods exist on all prototypes.
+Object methods extend to all prototypes.
 
 ## Minor
 
@@ -24,6 +24,9 @@ Object methods exist on all prototypes.
 - `#size`
 -- For objects, returns the number of *own* properties.
 -- Size returns a value specific to each type. See individual documentation.
+
+- `#string`
+-- Returns `true` if *self* is a string value, false otherwise.
 
 - `#type`
 -- Returns a string representation of *self's* type.

@@ -61,20 +61,26 @@ minor(Array.prototype, {
     return this[Math.floor(Math.random() * this.length)];
   },
   uniq: function () {
-    var s = {}, n = {}, o = {}, r = [], c = 0, p, i, k, item;
+    var s = {}, b = {}, n = {}, u = {}, o = {}, r = [], c = 0, p, i, k, item, type;
   
     for (i = 0; i < this.length; i++) {
       item = this[i];
+      type = Object.prototype.toString.call(item);
       p = true;
-      if (typeof item === 'string' && !s.hasOwnProperty(item)) {
+      if (type === '[object String]' && !s.hasOwnProperty(item)) {
         s[item] = true; r.push(item);
-      } else if (typeof item === 'number' && !n.hasOwnProperty(item)) {
+      } else if (type === '[object Boolean]' && !b.hasOwnProperty(item)) {
+        b[item] = true; r.push(item);
+      } else if (type === '[object Number]' && !n.hasOwnProperty(item)) {
         n[item] = true; r.push(item);
-      } else if (typeof item === 'object' || typeof item === 'function') {
+      } else if (type === '[object Object]' ||
+                 type === '[object Function]' ||
+                 type === '[object Array]') {
+        obj:
         for (k in o) {
           if (o.hasOwnProperty(k) && item === o[k]) {
             p = false;
-            break;
+            break obj;
           }
         }
         if (p) {
@@ -82,6 +88,10 @@ minor(Array.prototype, {
           r.push(item);
           c++;
         }
+      } else if ((type === '[object Undefined]' ||
+                  type === '[object Null]') &&
+                  !u.hasOwnProperty(item)) {
+        u[item] = true; r.push(item);
       }
     }
     

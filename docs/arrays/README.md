@@ -9,16 +9,16 @@ Array methods can be overridden on instances.
 -- Empties the array in place.
 
 - `#compact`
--- Returns a new array with all `undefined` removed.
+-- Returns a new array with all `undefined` values removed.
 
 - `#sample`
--- Returns a random value from the array. `undefined` is the array is empty.
+-- Returns a random value from the array. `undefined` if the array is empty.
 
 - `#size`
 -- Returns the length of the array.
 
 - `#uniq`
--- Returns a new array with all duplicates removed.
+-- Returns a new array with all duplicate values removed.
 
 ## Major
 

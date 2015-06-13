@@ -49,7 +49,7 @@ describe('Arrays', function () {
     f2 = f,
     a = [], a2 = a,
     o = {}, o2 = o,
-    foo = [f, f2, a, a2, o, o2, 1, 1, '5', '5'],
+    foo = [f, f2, a, a2, o, o2, 1, 1, '5', '5', true, true, false, false],
     bar = foo.uniq;
 
     it('should work with array values', function () {
@@ -67,6 +67,10 @@ describe('Arrays', function () {
       expect([o, o2, o3].uniq).to.deep.equal([o, o3]);
     });
 
+    it('should work on boolean values', function () {
+      expect([true, true, false, false].uniq).to.deep.equal([true, false]);
+    })
+
     it('should work on string values', function () {
       var arr = ['one', 'two', 'two', 'one', 'three'];
       expect(arr.uniq).to.deep.equal(['one', 'two', 'three']);
@@ -78,12 +82,12 @@ describe('Arrays', function () {
     });
 
     it('should work on mixed values', function () {
-      bar.should.deep.equal([f, a, o, 1, '5']);
+      bar.should.deep.equal([f, a, o, 1, '5', true, false]);
     });
 
     it('should not alter the original array', function () {
       bar.should.not.equal(foo);
-      foo.should.deep.equal([f, f2, a, a2, o, o2, 1, 1, '5', '5']);
+      foo.should.deep.equal([f, f2, a, a2, o, o2, 1, 1, '5', '5', true, true, false, false]);
     });
   });
 
