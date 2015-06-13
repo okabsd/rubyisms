@@ -1,5 +1,76 @@
 # Arrays
 
+Array methods can be overridden on prototypes.
+Array methods can be overridden on instances.
+
 ## Minor
 
+- `#clear`
+-- Empties the array in place.
+
+- `#compact`
+-- Returns a new array with all `undefined` removed.
+
+- `#sample`
+-- Returns a random value from the array. `undefined` is the array is empty.
+
+- `#uniq`
+-- Returns a new array with all duplicates removed.
+
 ## Major
+
+- `#assoc(key)`
+-- Returns the first object in the array who has a property matching the key given.
+
+```
+[{a: 1}, {b: 2}, {c: 3, b: 4}].assoc('b')
+>> {b: 2}
+```
+
+- `#drop()`
+-- is an alias of `Array.protoype.slice()`
+
+- `#fetch(index, substitute)`
+-- Finds element at given index - index can be negative to start from the end of the array. Returns the index, unless the index is `undefined`, then the substitute is returned.
+
+```JavaScript
+[1,2].fetch(1)
+>> 2
+[1, 2].fetch(5, 'foo')
+>> 'foo'
+```
+
+- `#reject(fnCallback)`
+-- Returns a new array containing each element from the original array that did not pass a given test.
+
+```JavaScript
+[1, '2', 3].reject(function (e) {return typeof e === 'number'});
+>> ['2']
+```
+
+- `#select`
+-- is an alias of `Array.prototype.filter()`
+
+- `#take(n)`
+-- Returns a new array containing the first *n* elements of the original array.
+
+```JavaScript
+[1, 2, 3, 4].take(2)
+>> [1, 2]
+```
+
+- `#valuesAt(args*)`
+-- Returns a new array containing each value from each suppiled index in the list of arguments. Out of bounds indices give `undefined`.
+
+```JavaScript
+[1, 2, 3].valuesAt(0, 2, 10)
+>> [1, 3, undefined]
+```
+
+- `#zip()`
+-- Returns an array of arrays that is the same length as the original array. Each array contains the values of the original arrays' values at each index.
+
+```JavaScript
+[1,2].zip(['a', 'b',], ['x', 'y',], ['shorter'])
+>> [ [ 1, 'a', 'x', 'shorter' ], [ 2, 'b', 'y', undefined ] ]
+```

@@ -24,15 +24,16 @@ function strap(g, s) {
   }, configurable: true};
 }
 
-function minor(prototype, o) {
+function minor(prototype, o, callback) {
   for (var k in o) {
     if (o.hasOwnProperty(k) && !prototype.hasOwnProperty(k)) {
       Object.defineProperty(prototype, k, strap(o[k], k));
+      if (callback) callback.call(null, k);
     }
   }
 }
 
-function major(prototype, o) {
+function major(prototype, o, callback) {
   for (var k in o) {
     if (!prototype.hasOwnProperty(k)) {
       Object.defineProperty(prototype, k, {
@@ -40,6 +41,7 @@ function major(prototype, o) {
         writable: true,
         configurable: true
       });
+      if (callback) callback.call(null, k);
     }
   }
 }
@@ -49,18 +51,21 @@ minor(Array.prototype, {
     while (this.length > 0) this.pop(); return this;
   },
   compact: function () {
-    return this.filter(function (e) {
-      return (typeof e !== 'undefined');
-    });
+    var o = [], i;
+    for (i = 0; i < this.length; i++) {
+      if(typeof this[i] !== 'undefined') o.push(this[i]);
+    }
+    return o;
   },
   sample: function () {
     return this[Math.floor(Math.random() * this.length)];
   },
   uniq: function () {
-    var s = {}, n = {}, o = {}, r = [], c = 0, p = true, i, k, item;
+    var s = {}, n = {}, o = {}, r = [], c = 0, p, i, k, item;
   
     for (i = 0; i < this.length; i++) {
       item = this[i];
+      p = true;
       if (typeof item === 'string' && !s.hasOwnProperty(item)) {
         s[item] = true; r.push(item);
       } else if (typeof item === 'number' && !n.hasOwnProperty(item)) {
@@ -78,8 +83,6 @@ minor(Array.prototype, {
           c++;
         }
       }
-      
-      p = true;
     }
     
     return r;
@@ -162,6 +165,9 @@ minor(Object.prototype, {
     var t = Object.prototype.toString.call(this).match(/\w+(?=\])/)[0].toLowerCase();
     return (t === 'number' && this !== this ? 'NaN' : t);
   }
+}, function (key) {
+  // Unset globals
+  G[key] = undefined;
 });
 
 minor(String.prototype, {
@@ -229,13 +235,12 @@ major(Array.prototype, {
   },
   valuesAt: function () {
     var a = Array.prototype.slice.call(arguments),
-        s = this,
         o = [], i;
 
     for (i = 0; i < a.length; i++) {
       if (typeof a[i] !== 'number' || !isFinite(a[i])) throw new TypeError('Expected index');
-      if (a[i] < 0) a[i] = s.length + a[i];
-      o.push(s[a[i]]);
+      if (a[i] < 0) a[i] = this.length + a[i];
+      o.push(this[a[i]]);
     }
 
     return o;
@@ -273,14 +278,5 @@ major(String.prototype, {
     return o + this;
   }
 });
-
-// Unset
-G.array = undefined;
-G.bool = undefined;
-G.func = undefined;
-G.numeric = undefined;
-G.size = undefined;
-G.string = undefined;
-G.type = undefined;
 
 }((typeof window !== 'undefined' ? window : global)));
