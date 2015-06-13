@@ -1,6 +1,6 @@
 {
   "name": "rubyisms",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Prototype extensions.",
   "main": "rubyisms.js",
   "repository": {
