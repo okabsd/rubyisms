@@ -7,43 +7,34 @@
     
 function define(s, v) {
   var type = Object.prototype.toString.call(this),
-      isObject = (type === '[object Object]'),
-      isSafe = (isObject ||
-                type === '[object Function]' ||
-                type === '[object Array]' ||
-                type === '[object global]' ||
-                type === '[object window]');
+      isObject = (type === '[object Object]');
 
-  if (!this.hasOwnProperty(s) && isSafe) {
-    Object.defineProperty(this, s, {
-      value: v,
-      writable: true,
-      enumerable: isObject,
-      configurable: true
-    });
-  } else {
-    throw new TypeError('Can not override minor method: ' + s);
-  }
+  delete this[s]; 
+  Object.defineProperty(this, s, {
+    value: v,
+    writable: true,
+    enumerable: isObject,
+    configurable: true
+  });
 }
 
 function strap(g, s) {
   return {get: g, set: function (v) {
     define.call(this, s, v);
-  }};
+  }, configurable: true};
 }
 
 function minor(prototype, o) {
   for (var k in o) {
-    if (prototype.hasOwnProperty(k)) delete o[k];
-    else o[k] = strap(o[k], k);
+    if (o.hasOwnProperty(k) && !prototype.hasOwnProperty(k)) {
+      Object.defineProperty(prototype, k, strap(o[k], k));
+    }
   }
-  Object.defineProperties(prototype, o);
 }
 
 function major(prototype, o) {
   for (var k in o) {
-    if (prototype.hasOwnProperty(k)) continue;
-    else {
+    if (!prototype.hasOwnProperty(k)) {
       Object.defineProperty(prototype, k, {
         value: o[k],
         writable: true,
@@ -268,7 +259,7 @@ major(String.prototype, {
 G.array = undefined;
 G.bool = undefined;
 G.func = undefined;
-G.numeric = undefined
+G.numeric = undefined;
 G.size = undefined;
 G.string = undefined;
 G.type = undefined;
