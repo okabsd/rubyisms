@@ -15,7 +15,7 @@ Hmm.
 
 *Major* methods are the same old functions-assigned-to-properties that we're all used to. They're basic functions attached to the prototype chain. They accept arguments, and they can chain `.call`, `.apply`, `.bind`, because they *are* functions.
 
-*Minor* methods are methods implemented behind *getters* & *setters*. It would be fair to simply call them getters, but there's generally a lot more going on below the surface than just property retrieval. They can *not* be invoked externally, and as such they never accept any arguments. The are simply called.
+*Minor* methods are methods implemented behind *getters* & *setters*. It would be fair to simply call them getters, but there's generally a lot more going on below the surface than just property retrieval. They can *not* be invoked externally, and as such they never accept any arguments. They are simply called.
 
 
 ## Immutable . . . or ?

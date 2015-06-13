@@ -57,10 +57,32 @@ minor(Array.prototype, {
     return this[Math.floor(Math.random() * this.length)];
   },
   uniq: function () {
-    var c = {};
-    return this.filter(function (e) {
-      return (c.hasOwnProperty(e) ? false : c[e] = true);
-    });
+    var s = {}, n = {}, o = {}, r = [], c = 0, p = true, i, k, item;
+  
+    for (i = 0; i < this.length; i++) {
+      item = this[i];
+      if (typeof item === 'string' && !s.hasOwnProperty(item)) {
+        s[item] = true; r.push(item);
+      } else if (typeof item === 'number' && !n.hasOwnProperty(item)) {
+        n[item] = true; r.push(item);
+      } else if (typeof item === 'object' || typeof item === 'function') {
+        for (k in o) {
+          if (o.hasOwnProperty(k) && item === o[k]) {
+            p = false;
+            break;
+          }
+        }
+        if (p) {
+          o[c] = item;
+          r.push(item);
+          c++;
+        }
+      }
+      
+      p = true;
+    }
+    
+    return r;
   }
 });
 
@@ -208,30 +230,27 @@ major(Array.prototype, {
   valuesAt: function () {
     var a = Array.prototype.slice.call(arguments),
         s = this,
-        o = [];
+        o = [], i;
 
-    a.forEach(function (e) {
-      if (typeof e !== 'number' || !isFinite(e)) throw new TypeError('Expected index');
-      if (e < 0) e = s.length + e;
-      o.push(s[e]);
-    });
+    for (i = 0; i < a.length; i++) {
+      if (typeof a[i] !== 'number' || !isFinite(a[i])) throw new TypeError('Expected index');
+      if (a[i] < 0) a[i] = s.length + a[i];
+      o.push(s[a[i]]);
+    }
 
     return o;
   },
   zip: function() {
     var a = Array.prototype.slice.call(arguments),
-        o = [];
+        o = [], i, j, q;
 
-    this.forEach(function(e, i) {
-      var q = [e];
-
-      a.forEach(function(e) {
-        if (!Array.isArray(e)) throw new TypeError('Expected type array');
-        q.push(e[i]);
-      });
-
+    for (i = 0; i < this.length; i++) {
+      q = [this[i]];
+      for(j = 0; j < a.length; j++) {
+        q.push(a[j][i]);
+      }
       o.push(q);
-    });
+    }
 
     return o;
   }

@@ -45,15 +45,45 @@ describe('Arrays', function () {
   });
 
   describe('#uniq', function () {
-    var foo = [1, 2, 2, 3, 3],
-        bar = foo.uniq;
+    var f = function () {},
+    f2 = f,
+    a = [], a2 = a,
+    o = {}, o2 = o,
+    foo = [f, f2, a, a2, o, o2, 1, 1, '5', '5'],
+    bar = foo.uniq;
 
-    it('should remove all duplicate values', function () {
-      assert.deepEqual(bar, [1, 2, 3]);
+    it('should work with array values', function () {
+      var a3 = [];
+      expect([a, a2, a3].uniq).to.deep.equal([a, a3]);
+    });
+
+    it('should work with function values', function () {
+      var f3 = function () {};
+      expect([f, f2, f3].uniq).to.deep.equal([f, f3]);
+    });
+
+    it('should work with object values', function () {
+      var o3 = {};
+      expect([o, o2, o3].uniq).to.deep.equal([o, o3]);
+    });
+
+    it('should work on string values', function () {
+      var arr = ['one', 'two', 'two', 'one', 'three'];
+      expect(arr.uniq).to.deep.equal(['one', 'two', 'three']);
+    });
+
+    it('should work on number values', function () {
+      var arr = [1, 2, 2, 1, 3];
+      expect(arr.uniq).to.deep.equal([1, 2, 3]);
+    });
+
+    it('should work on mixed values', function () {
+      bar.should.deep.equal([f, a, o, 1, '5']);
     });
 
     it('should not alter the original array', function () {
       bar.should.not.equal(foo);
+      foo.should.deep.equal([f, f2, a, a2, o, o2, 1, 1, '5', '5']);
     });
   });
 
