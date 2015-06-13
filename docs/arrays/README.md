@@ -14,6 +14,9 @@ Array methods can be overridden on instances.
 - `#sample`
 -- Returns a random value from the array. `undefined` is the array is empty.
 
+- `#size`
+-- Returns the length of the array.
+
 - `#uniq`
 -- Returns a new array with all duplicates removed.
 

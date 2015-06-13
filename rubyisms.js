@@ -152,11 +152,13 @@ minor(Object.prototype, {
     return Object.prototype.toString.call(this) === '[object Object]';
   },
   size: function () {
-    if (Array.isArray(this) || 
-      typeof this === 'string' || 
-      typeof this === 'function') return this.length;
-    else if (typeof this === 'object') return Object.keys(this).length;
-    else if (typeof this === 'number' && this === this) return this;
+    var type = Object.prototype.toString.call(this);
+    if (type === '[object Array]' ||
+        type === '[object String]' ||
+        type === '[object Function]') return this.length;
+    else if (type === '[object Object]') return Object.keys(this).length;
+    else if (type === '[object Boolean]') return Number(this);
+    else if (type === '[object Number]' && this === this) return this;
   },
   string: function () {
     return Object.prototype.toString.call(this) === '[object String]';

@@ -77,6 +77,11 @@ describe('Objects', function () {
       expect(s.size).to.equal(3);
     });
 
+    it('should return a numeric value for booleans', function () {
+      expect(true.size).to.equal(1);
+      expect(false.size).to.equal(0);
+    })
+
     it('should return the number of arguments a function has defined', function () {
       expect(f.size).to.equal(2);
     });
