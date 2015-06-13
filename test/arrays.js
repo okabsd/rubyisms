@@ -31,9 +31,22 @@ describe('Arrays', function () {
     });
   });
 
+  describe('#sample', function () {
+    var foo = ['a', 'b'],
+        bar = foo.sample;
+
+    it('should return a random value from the array', function () {
+      expect(bar).to.be.a('string');
+    });
+
+    it('should not alter the original array', function () {
+      assert.deepEqual(foo, ['a', 'b']);
+    });
+  });
+
   describe('#uniq', function () {
     var foo = [1, 2, 2, 3, 3],
-          bar = foo.uniq;
+        bar = foo.uniq;
 
     it('should remove all duplicate values', function () {
       assert.deepEqual(bar, [1, 2, 3]);
@@ -46,16 +59,28 @@ describe('Arrays', function () {
 
   // Major methods
 
+  describe('#assoc()', function () {
+    var foo = [{a: 1}, 'bar', {b: 2}, {b: 4}],
+        bar = foo.assoc('b');
+
+    it('should return the first object that has the given property', function () {
+      bar.should.equal(foo[2]);
+    });
+
+    it('should not alter the original array', function () {
+      assert.deepEqual(foo, [{a: 1}, 'bar', {b: 2}, {b: 4}]);
+    });
+  });
+
   describe('#drop()', function () {
     var foo = [1, 2, 3],
         bar = foo.drop(2);
 
-    it('should return a new array starting from the index', function () {
+    it('should return a new array starting from the given index', function () {
       assert.deepEqual(bar, [3]);
     });
 
     it('should not alter the original array', function () {
-      expect(foo.drop).to.equal(foo.slice);
       bar.should.not.equal(foo);
     })
   });
@@ -81,6 +106,30 @@ describe('Arrays', function () {
 
     it('should not alter the original array', function () {
       assert.deepEqual(foo, [1, 'baz', 3, undefined]);
+    });
+  });
+
+  describe('#reject()', function () {
+    var foo = [1, 'baz', 3],
+        bar = foo.reject(function (e) {
+          return typeof e === 'number';
+        });
+
+    it('should return an array of elements that fail a given test', function () {
+      assert.deepEqual(bar, ['baz']);
+    });
+
+    it('should not alter the original array', function () {
+      assert.deepEqual(foo, [1, 'baz', 3]);
+    });
+  });
+
+  describe('#select()', function () {
+    var foo = [].select,
+        bar = [].filter;
+
+    it('should be the same as #filter()', function () {
+      foo.should.equal(bar);
     });
   });
 

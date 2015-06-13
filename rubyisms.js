@@ -27,6 +27,9 @@ def(AP, {
       return (typeof e !== 'undefined');
     });
   }),
+  sample: $(function () {
+    return this[Math.floor(Math.random() * this.length)];
+  }),
   uniq: $(function () {
     var c = {};
     return this.filter(function (e) {
@@ -47,6 +50,15 @@ def(NP, {
   abs: $(function () {
     return Math.abs(this);
   }),
+  abs2: $(function () {
+    return this * this;
+  }),
+  arg: $(function () {
+    return (this < 0 ? Math.PI : 0);
+  }),
+  ceil: $(function () {
+    return Math.ceil(this);
+  }),
   finite: $(function () {
     return isFinite(this);
   }),
@@ -56,6 +68,9 @@ def(NP, {
   integer: $(function () {
     return this.toFixed() == this && this !== Infinity;
   }),
+  nonzero: $(function () {
+    return (this !== 0 ? this: null);
+  }),
   polar: $(function () {
     return (isFinite(this) && 
     [Math.abs(this), (this < 0 ? Math.PI : 0)]) || 
@@ -63,6 +78,9 @@ def(NP, {
   }),
   round: $(function () {
     return Math.round(this);
+  }),
+  zero: $(function () {
+    return this === 0;
   })
 });
 
@@ -105,6 +123,9 @@ def(SP, {
   chars: $(function () {
     return this.split('');
   }),
+  chop: $(function () {
+    return this.slice(0, this.length - 1);
+  }),
   chr: $(function () {
     return this.substring(0, 1);
   }),
@@ -119,6 +140,15 @@ def(SP, {
     for (e = 0; i >= e; i--) r += this[i];
     return r;
   }),
+  swapcase: $(function () {
+    var s = '', i, c;
+    for (i = 0; i < this.length; i++) {
+      c = this[i].toUpperCase();
+      if (c === this[i]) c = this[i].toLowerCase();
+      s += c;
+    }
+    return s;
+  }),
   upcase: $(function () {
     return this.toUpperCase();
   })
@@ -128,6 +158,12 @@ def(SP, {
 
 var _Array = {
   _p: AP,
+  assoc: function (key) {
+    for (var i = 0; i < this.length; i++) {
+      if (OP.toString.call(this[i]) !== '[object Object]') continue;
+      if (this[i].hasOwnProperty(key)) return this[i];
+    }
+  },
   drop: AP.slice,
   fetch: function(n, d) {
     if (typeof n !== 'number' || !isFinite(n)) throw new TypeError('Expected number');
@@ -135,6 +171,14 @@ var _Array = {
     if (n < 0) n = this.length + n;
     return (typeof this[n] !== 'undefined' ? this[n] : d);
   },
+  reject: function (f) {
+    var a = [], i;
+    for (i = 0; i < this.length; i++) {
+      if (!f.call(null, this[i], i)) a.push(this[i]);
+    }
+    return a;
+  },
+  select: AP.filter,
   take: function (n) {
     return this.slice().splice(0, n);
   },

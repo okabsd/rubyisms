@@ -1,1 +1,5 @@
 # Strings
+
+## Minor
+
+## Major

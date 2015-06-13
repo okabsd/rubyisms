@@ -24,6 +24,33 @@ describe('Numbers', function () {
     });
   });
 
+  describe('#abs2', function () {
+    it('should return the value of the number squared', function () {
+      expect(zero.abs2).to.equal(0);
+      expect(one.abs2).to.equal(1);
+      expect(neg.abs2).to.equal(25);
+      expect(pos.abs2).to.equal(49);
+    });
+  });
+
+  describe('#arg', function () {
+    it('should return PI if negative, 0 otherwise', function () {
+      expect(zero.arg).to.equal(0);
+      expect(pos.arg).to.equal(0);
+      expect(neg.arg).to.equal(Math.PI);
+      expect(negf.arg).to.equal(Math.PI);
+    });
+  });
+
+  describe('#ceil', function () {
+    it('should return the largest integer greater than or equal to self', function () {
+      expect(zero.ceil).to.equal(0);
+      expect(one.ceil).to.equal(1);
+      expect(posf.ceil).to.equal(13);
+      expect(negf.ceil).to.equal(-3);
+    });
+  });
+
   describe('#finite', function () {
     it('should return true or false if number is finite', function () {
       expect(zero.finite).to.be.true;
@@ -57,6 +84,14 @@ describe('Numbers', function () {
     });
   });
 
+  describe('#nonzero', function () {
+    it('should return self if not 0, null otherwise', function () {
+      expect(zero.nonzero).to.equal(null);
+      expect(one.nonzero).to.equal(one);
+      expect(negf.nonzero).to.equal(negf);
+    });
+  });
+
   describe('#polar', function () {
     it('should return [absolute value of number, (PI if negative, 0 otherwise)]', function () {
       assert.deepEqual(one.polar, [1, 0]);
@@ -75,6 +110,17 @@ describe('Numbers', function () {
 
       expect(negf.round).to.eql(-3)
       expect(posf.round).to.eql(12)
+    });
+  });
+
+  describe('#zero', function () {
+    it('should return true if value is zero, false otherwise', function () {
+      expect(zero.zero).to.be.true;
+      expect(one.zero).to.be.false;
+      expect(pos.zero).to.be.false;
+      expect(negf.zero).to.be.false;
+      expect(NaN.zero).to.be.false;
+      expect(Infinity.zero).to.be.false;
     });
   });
 

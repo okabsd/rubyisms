@@ -34,6 +34,20 @@ describe('Strings', function () {
     });
   });
 
+  describe('#chop', function () {
+    var foo = 'hello',
+        bar = foo.chop;
+
+    it('should return a string with the last character removed', function () {
+      bar.should.equal('hell');
+      expect(''.chop).to.equal('');
+    });
+
+    it('should not affect the original', function () {
+      foo.should.equal('hello');
+    });  
+  });
+
   describe('#chr', function () {
     var foo = 'hello',
         bar = foo.chr;
@@ -88,6 +102,19 @@ describe('Strings', function () {
     it('should not affect the original', function () {
       foo.should.equal('hello');
     }); 
+  });
+
+  describe('#swapcase', function () {
+    var foo = 'HeLlO',
+        bar = foo.swapcase
+
+    it('should return a string with each character swapped in case', function () {
+      bar.should.equal('hElLo');
+    });
+
+    it('should not affect the original', function () {
+      foo.should.equal('HeLlO');
+    });
   });
 
   describe('#upcase', function () {
