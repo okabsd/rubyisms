@@ -1,146 +1,161 @@
 // Colin 'Oka' Hall-Coates
-// http://oka.io
+// http://oka.io <yo@oka.io>
 // MIT, 2015
 
-;(function ($) {
+;(function () {
 'use strict';
-
-var def = Object.defineProperties,
-    AP = Array.prototype,
-    BP = Boolean.prototype,
-    FP = Function.prototype,
-    NP = Number.prototype,
-    OP = Object.prototype,
-    SP = String.prototype;
     
+function define(s, v) {
+  Object.defineProperty(this, s, {
+    value: v,
+    writable: true
+  });
+}
 
-function $(g, s) {return {get: g, set: s};}
+function strap(g, s) {
+  return {get: g, set: function (v) {
+    define.call(this, s, v);
+  }};
+}
 
-// Minor methods
+function minor(prototype, o) {
+  for (var k in o) {
+    if (prototype.hasOwnProperty(k)) delete o[k];
+    else o[k] = strap(o[k], k)
+  };
+  Object.defineProperties(prototype, o);
+}
 
-def(AP, {
-  clear: $(function () {
+function major(prototype, o) {
+  for (var k in o) {
+    if (prototype.hasOwnProperty(k)) continue;
+    else define.call(prototype, k, o[k]);
+  }
+}
+
+minor(Array.prototype, {
+  clear: function () {
     while (this.length > 0) this.pop(); return this;
-  }),
-  compact: $(function () {
+  },
+  compact: function () {
     return this.filter(function (e) {
       return (typeof e !== 'undefined');
     });
-  }),
-  sample: $(function () {
+  },
+  sample: function () {
     return this[Math.floor(Math.random() * this.length)];
-  }),
-  uniq: $(function () {
+  },
+  uniq: function () {
     var c = {};
     return this.filter(function (e) {
       return (c.hasOwnProperty(e) ? false : c[e] = true);
     });
-  }),
+  }
 });
 
-def(BP, {
-  not: $(function () {
+minor(Boolean.prototype, {
+  not: function () {
     return !this;
-  })
+  }
 });
 
-def(FP, {});
+minor(Function.prototype, {});
 
-def(NP, {
-  abs: $(function () {
+minor(Number.prototype, {
+  abs: function () {
     return Math.abs(this);
-  }),
-  abs2: $(function () {
+  },
+  abs2: function () {
     return this * this;
-  }),
-  arg: $(function () {
+  },
+  arg: function () {
     return (this < 0 ? Math.PI : 0);
-  }),
-  ceil: $(function () {
+  },
+  ceil: function () {
     return Math.ceil(this);
-  }),
-  finite: $(function () {
+  },
+  finite: function () {
     return isFinite(this);
-  }),
-  floor: $(function () {
+  },
+  floor: function () {
     return Math.floor(this);
-  }),
-  integer: $(function () {
+  },
+  integer: function () {
     return this.toFixed() == this && this !== Infinity;
-  }),
-  nonzero: $(function () {
+  },
+  nonzero: function () {
     return (this !== 0 ? this: null);
-  }),
-  polar: $(function () {
+  },
+  polar: function () {
     return (isFinite(this) && 
     [Math.abs(this), (this < 0 ? Math.PI : 0)]) || 
     undefined;
-  }),
-  round: $(function () {
+  },
+  round: function () {
     return Math.round(this);
-  }),
-  zero: $(function () {
+  },
+  zero: function () {
     return this === 0;
-  })
+  }
 });
 
-def(OP, {
-  array: $(function () {
-    return OP.toString.call(this) === '[object Array]';
-  }),
-  bool: $(function () {
-    return OP.toString.call(this) === '[object Boolean]';
-  }),
-  func: $(function () {
-    return OP.toString.call(this) === '[object Function]';
-  }),
-  numeric: $(function () {
-    return OP.toString.call(this) === '[object Number]' && this === this;
-  }),
-  object: $(function () {
-    return OP.toString.call(this) === '[object Object]';
-  }),
-  size: $(function () {
+minor(Object.prototype, {
+  array: function () {
+    return Object.prototype.toString.call(this) === '[object Array]';
+  },
+  bool: function () {
+    return Object.prototype.toString.call(this) === '[object Boolean]';
+  },
+  func: function () {
+    return Object.prototype.toString.call(this) === '[object Function]';
+  },
+  numeric: function () {
+    return Object.prototype.toString.call(this) === '[object Number]' && this === this;
+  },
+  object: function () {
+    return Object.prototype.toString.call(this) === '[object Object]';
+  },
+  size: function () {
     if (Array.isArray(this) || 
       typeof this === 'string' || 
       typeof this === 'function') return this.length;
     else if (typeof this === 'object') return Object.keys(this).length;
     else if (typeof this === 'number' && this === this) return this;
-  }),
-  string: $(function () {
-    return OP.toString.call(this) === '[object String]';
-  }),
-  type: $(function () {
-    var t = OP.toString.call(this).match(/\w+(?=\])/)[0].toLowerCase();
+  },
+  string: function () {
+    return Object.prototype.toString.call(this) === '[object String]';
+  },
+  type: function () {
+    var t = Object.prototype.toString.call(this).match(/\w+(?=\])/)[0].toLowerCase();
     return (t === 'number' && this !== this ? 'NaN' : t);
-  })
+  }
 });
 
-def(SP, {
-  capitalize: $(function () {
+minor(String.prototype, {
+  capitalize: function () {
     return this.substring(0, 1).toUpperCase() + this.substring(1);
-  }),
-  chars: $(function () {
+  },
+  chars: function () {
     return this.split('');
-  }),
-  chop: $(function () {
+  },
+  chop: function () {
     return this.slice(0, this.length - 1);
-  }),
-  chr: $(function () {
+  },
+  chr: function () {
     return this.substring(0, 1);
-  }),
-  downcase: $(function () {
+  },
+  downcase: function () {
     return this.toLowerCase();
-  }),
-  empty: $(function () {
+  },
+  empty: function () {
     return this.length < 1;
-  }),
-  reverse: $(function () {
+  },
+  reverse: function () {
     var r = '', i = this.length - 1, e;
     for (e = 0; i >= e; i--) r += this[i];
     return r;
-  }),
-  swapcase: $(function () {
+  },
+  swapcase: function () {
     var s = '', i, c;
     for (i = 0; i < this.length; i++) {
       c = this[i].toUpperCase();
@@ -148,23 +163,20 @@ def(SP, {
       s += c;
     }
     return s;
-  }),
-  upcase: $(function () {
+  },
+  upcase: function () {
     return this.toUpperCase();
-  })
+  }
 });
 
-// Major methods
-
-var _Array = {
-  _p: AP,
+major(Array.prototype, {
   assoc: function (key) {
     for (var i = 0; i < this.length; i++) {
-      if (OP.toString.call(this[i]) !== '[object Object]') continue;
+      if (Object.prototype.toString.call(this[i]) !== '[object Object]') continue;
       if (this[i].hasOwnProperty(key)) return this[i];
     }
   },
-  drop: AP.slice,
+  drop: Array.prototype.slice,
   fetch: function(n, d) {
     if (typeof n !== 'number' || !isFinite(n)) throw new TypeError('Expected number');
     if (Math.abs(n) > this.length - 1 && typeof d === 'undefined') throw new RangeError('Index out of bounds');
@@ -178,7 +190,7 @@ var _Array = {
     }
     return a;
   },
-  select: AP.filter,
+  select: Array.prototype.filter,
   take: function (n) {
     return this.slice().splice(0, n);
   },
@@ -212,41 +224,24 @@ var _Array = {
 
     return o;
   }
-};
+});
 
-var _Boolean = {
-  _p: BP
-};
+major(Boolean.prototype, {});
 
-var _Function = {
-  _p: FP
-};
+major(Function.prototype, {});
 
-var _Number = {
-  _p: NP
-};
+major(Number.prototype, {});
 
-var _Object = {
-  _p: OP,
+major(Object.prototype, {
   eql: function (o) {
     return this === o;
   }
-};
+});
 
-var _String = {
-  _p: SP,
+major(String.prototype, {
   prepend: function (o) {
     return o + this;
   }
-};
-
-function buildPrototypes(e) {
-  for (var k in e) {
-    if (k === '_p') continue;
-    if (e.hasOwnProperty(k)) e._p[k] = (e._p[k] || e[k]);
-  }
-}
-
-[_Array, _Boolean, _Function, _Number, _Object, _String].forEach(buildPrototypes);
+});
 
 }());
