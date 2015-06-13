@@ -12,7 +12,7 @@
 
 ## Info
 
-A set of prototype extensions for native types in ES5 JavaScript.
+A highly experimental set of prototype extensions for native types in ES5 JavaScript.
 
 ## Install
 
@@ -22,7 +22,7 @@ Using [npm](https://www.npmjs.com/), of course.
 
 ## Documentation
 
-~~Full~~ list of methods [here](https://github.com/Oka-/rubyisms/tree/master/docs).
+Full list of methods [here](https://github.com/Oka-/rubyisms/tree/master/docs).
 
 [npm-url]: https://www.npmjs.com/package/rubyisms
 [npm-image]: http://img.shields.io/npm/v/rubyisms.svg

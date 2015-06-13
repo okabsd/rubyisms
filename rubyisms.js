@@ -2,14 +2,28 @@
 // http://oka.io <yo@oka.io>
 // MIT, 2015
 
-;(function () {
+;(function (G) {
 'use strict';
     
 function define(s, v) {
-  Object.defineProperty(this, s, {
-    value: v,
-    writable: true
-  });
+  var type = Object.prototype.toString.call(this),
+      isObject = (type === '[object Object]'),
+      isSafe = (isObject ||
+                type === '[object Function]' ||
+                type === '[object Array]' ||
+                type === '[object global]' ||
+                type === '[object window]');
+
+  if (!this.hasOwnProperty(s) && isSafe) {
+    Object.defineProperty(this, s, {
+      value: v,
+      writable: true,
+      enumerable: isObject,
+      configurable: true
+    });
+  } else {
+    throw new TypeError('Can not override minor method: ' + s);
+  }
 }
 
 function strap(g, s) {
@@ -21,15 +35,21 @@ function strap(g, s) {
 function minor(prototype, o) {
   for (var k in o) {
     if (prototype.hasOwnProperty(k)) delete o[k];
-    else o[k] = strap(o[k], k)
-  };
+    else o[k] = strap(o[k], k);
+  }
   Object.defineProperties(prototype, o);
 }
 
 function major(prototype, o) {
   for (var k in o) {
     if (prototype.hasOwnProperty(k)) continue;
-    else define.call(prototype, k, o[k]);
+    else {
+      Object.defineProperty(prototype, k, {
+        value: o[k],
+        writable: true,
+        configurable: true
+      });
+    }
   }
 }
 
@@ -244,4 +264,13 @@ major(String.prototype, {
   }
 });
 
-}());
+// Unset
+G.array = undefined;
+G.bool = undefined;
+G.func = undefined;
+G.numeric = undefined
+G.size = undefined;
+G.string = undefined;
+G.type = undefined;
+
+}((typeof window !== 'undefined' ? window : global)));
