@@ -1,7 +1,15 @@
 {
   "name": "rubyisms",
   "version": "0.2.4",
-  "description": "Prototype extensions.",
+  "description": "Ruby style ES5 prototype extensions.",
+  "keywords": [
+    "ES5",
+    "extensions",
+    "javascript",
+    "native",
+    "prototype",
+    "rubyisms"
+  ],
   "main": "rubyisms.js",
   "repository": {
     "type": "git",

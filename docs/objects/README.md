@@ -7,16 +7,16 @@ Object methods extend to all prototypes.
 ## Minor
 
 - `#array`
--- Returns `true` if *self* is an array, false otherwise.
+-- Returns `true` if *self* is an array, `false` otherwise.
 
 - `#bool`
--- Returns `true` if *self* is a boolean, false otherwise.
+-- Returns `true` if *self* is a boolean, `false` otherwise.
 
 - `#func`
--- Returns `true` if *self* is a function, false otherwise.
+-- Returns `true` if *self* is a function, `false` otherwise.
 
 - `#numeric`
--- Returns `true` if *self* is a numeric value, false otherwise. `NaN` is *not* numeric, `Infinity` is.
+-- Returns `true` if *self* is a numeric value, `false` otherwise. `NaN` is *not* numeric, `Infinity` is.
 
 - `#object`
 -- Returns `true` if *self* is an object.
@@ -26,7 +26,7 @@ Object methods extend to all prototypes.
 -- Size returns a value specific to each type. See individual documentation.
 
 - `#string`
--- Returns `true` if *self* is a string value, false otherwise.
+-- Returns `true` if *self* is a string value, `false` otherwise.
 
 - `#type`
 -- Returns a string representation of *self's* type.
@@ -35,4 +35,4 @@ Object methods extend to all prototypes.
 ## Major
 
 - `#eql(value)`
--- Returns true if *self* strictly equals the supplied argument.
+-- Returns `true` if *self* strictly equals the supplied argument, `false` otherise.

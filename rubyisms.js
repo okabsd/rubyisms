@@ -121,7 +121,7 @@ minor(Number.prototype, {
     return Math.ceil(this);
   },
   even: function () {
-    return this % 2 === 0;
+    return this.toFixed() == this && this % 2 === 0;
   },
   finite: function () {
     return isFinite(this);
@@ -131,6 +131,13 @@ minor(Number.prototype, {
   },
   integer: function () {
     return this.toFixed() == this && this !== Infinity;
+  },
+  next: function () {
+    if (this.toFixed() != this || this === Infinity) {
+      throw new TypeError('Self must be integer');
+    }
+
+    return this + 1;
   },
   nonzero: function () {
     return (this !== 0 ? this: null);
@@ -142,6 +149,13 @@ minor(Number.prototype, {
     return (isFinite(this) && 
     [Math.abs(this), (this < 0 ? Math.PI : 0)]) || 
     undefined;
+  },
+  pred: function () {
+    if (this.toFixed() != this || this === Infinity) {
+      throw new TypeError('Self must be integer');
+    }
+
+    return this - 1;
   },
   round: function () {
     return Math.round(this);
@@ -283,7 +297,43 @@ major(Boolean.prototype, {});
 
 major(Function.prototype, {});
 
-major(Number.prototype, {});
+major(Number.prototype, {
+  downto: function (n, fn, after) {
+    var type = Object.prototype.toString.call(n);
+    if (type !== '[object Number]' || n.toFixed() != n) {
+      throw new TypeError('Integer value required');
+    }
+    if (this.toFixed() != this || this === Infinity) {
+      throw new TypeError('Self is not an integer');
+    }
+    if (typeof fn !== 'function') throw new TypeError('Expected function');
+    for (var i = this; i >= n; i--) {
+      fn.call(this, i);
+    }
+    return (typeof after === 'function'? after.call(this) : after);
+  },
+  times: function (fn, after) {
+    if (typeof fn !== 'function') throw new TypeError('Expected function');
+    for (var i = 1; i <= this; i++) {
+      fn.call(this, i);
+    }
+    return (typeof after === 'function'? after.call(this) : after);
+  },
+  upto: function (n, fn, after) {
+    var type = Object.prototype.toString.call(n);
+    if (type !== '[object Number]' || n.toFixed() != n) {
+      throw new TypeError('Integer value required');
+    }
+    if (this.toFixed() != this || this === Infinity) {
+      throw new TypeError('Self is not an integer');
+    }
+    if (typeof fn !== 'function') throw new TypeError('Expected function');
+    for (var i = this; i <= n; i++) {
+      fn.call(this, i);
+    }
+    return (typeof after === 'function'? after.call(this) : after);
+  }
+});
 
 major(Object.prototype, {
   eql: function (o) {

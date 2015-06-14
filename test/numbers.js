@@ -94,6 +94,24 @@ describe('Numbers', function () {
     });
   });
 
+  describe('#next', function () {
+    var i = 5,
+        f = 5.5;
+    it('should return self + 1, if self is integer value', function () {
+      expect(i.next).to.equal(6);
+    });
+
+    it('should throw TypeError if self is not integer value', function () {
+      expect(function () {f.next}).to.throw(TypeError);
+      expect(function () {NaN.next}).to.throw(TypeError);
+      expect(function () {Infinity.next}).to.throw(TypeError);
+    });
+
+    it('should not effect the original value', function () {
+      i.should.equal(5);
+    });
+  });
+
   describe('#nonzero', function () {
     it('should return self if not 0, null otherwise', function () {
       expect(zero.nonzero).to.equal(null);
@@ -121,6 +139,24 @@ describe('Numbers', function () {
     });
   });
 
+  describe('#pred', function () {
+    var i = 5,
+        f = 5.5;
+    it('should return self + 1, if self is integer value', function () {
+      expect(i.pred).to.equal(4);
+    });
+
+    it('should throw TypeError if self is not integer value', function () {
+      expect(function () {f.pred}).to.throw(TypeError);
+      expect(function () {NaN.pred}).to.throw(TypeError);
+      expect(function () {Infinity.pred}).to.throw(TypeError);
+    });
+
+    it('should not effect the original value', function () {
+      i.should.equal(5);
+    });
+  });
+
   describe('#round', function () {
     it('should return the value rounded to the nearest integer', function () {
       expect(zero.round).to.equal(0);
@@ -143,4 +179,104 @@ describe('Numbers', function () {
   });
 
   // Major methods
+
+  describe('#downto()', function () {
+    var i = 20,
+        l = 15;
+
+    it('should loop from self to limit, invoking its callback function', function () {
+      var out = [];
+      i.downto(l, function (n) {
+        out.push(n);
+      });
+      out.should.deep.equal([20, 19, 18, 17, 16, 15]);
+    });
+
+    it('should return second parameter', function () {
+      expect(i.downto(l, function (i) {
+        return i;
+      }, 'hello!')).to.equal('hello!');
+    });
+
+    it('should invoke and return second parameter if function', function () {
+      expect(i.downto(l, function (i) {
+        return i;
+      }, function () {
+        return 'hello!';
+      })).to.equal('hello!');
+    });
+
+    it('should not affect own value', function () {
+      i.should.equal(20);
+    });
+
+    it('should not effect limit value', function () {
+      l.should.equal(15);
+    });
+  });
+
+  describe('#times()', function () {
+    var i = 5;
+
+    it('should loop n times invoking its callback function', function () {
+      var out = [];
+      i.times(function (i) {
+          out.push(i);
+        });
+      out.should.deep.equal([1, 2, 3, 4, 5]);
+    });
+
+    it('should return second parameter', function () {
+      expect(i.times(function (i) {
+        return i;
+      }, 'hello!')).to.equal('hello!');
+    });
+
+    it('should invoke and return second parameter if function', function () {
+      expect(i.times(function (i) {
+        return i;
+      }, function () {
+        return 'hello!';
+      })).to.equal('hello!');
+    });
+
+    it('should not affect own value', function () {
+      i.should.equal(5);
+    });
+  });
+
+  describe('#upto()', function () {
+    var i = 5,
+        l = 10;
+
+    it('should loop from self to limit, invoking its callback function', function () {
+      var out = [];
+      i.upto(l, function (n) {
+        out.push(n);
+      });
+      out.should.deep.equal([5, 6, 7, 8, 9, 10]);
+    });
+
+    it('should return second parameter', function () {
+      expect(i.upto(l, function (i) {
+        return i;
+      }, 'hello!')).to.equal('hello!');
+    });
+
+    it('should invoke and return second parameter if function', function () {
+      expect(i.upto(l, function (i) {
+        return i;
+      }, function () {
+        return 'hello!';
+      })).to.equal('hello!');
+    });
+
+    it('should not affect own value', function () {
+      i.should.equal(5);
+    });
+
+    it('should not effect limit value', function () {
+      l.should.equal(10);
+    });
+  });
 });
