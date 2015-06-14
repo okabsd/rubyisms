@@ -57,6 +57,9 @@ minor(Array.prototype, {
     }
     return o;
   },
+  empty: function () {
+    return this.length < 1;
+  },
   sample: function () {
     return this[Math.floor(Math.random() * this.length)];
   },
@@ -105,7 +108,11 @@ minor(Boolean.prototype, {
   }
 });
 
-minor(Function.prototype, {});
+minor(Function.prototype, {
+  clone: function () {
+    return this.bind();
+  }
+});
 
 minor(Number.prototype, {
   abs: function () {
@@ -172,6 +179,12 @@ minor(Object.prototype, {
   bool: function () {
     return Object.prototype.toString.call(this) === '[object Boolean]';
   },
+  empty: function () {
+    var type = Object.prototype.toString.call(this);
+    if (type === '[object Object]') {
+      return Object.keys(this).length < 1;
+    }
+  },
   func: function () {
     return Object.prototype.toString.call(this) === '[object Function]';
   },
@@ -187,7 +200,7 @@ minor(Object.prototype, {
         type === '[object String]' ||
         type === '[object Function]') return this.length;
     else if (type === '[object Object]') return Object.keys(this).length;
-    else if (type === '[object Boolean]') return Number(this);
+    else if (type === '[object Boolean]') return (this ? 1 : 0);
     else if (type === '[object Number]' && this === this) return this;
   },
   string: function () {
@@ -246,6 +259,23 @@ major(Array.prototype, {
       if (Object.prototype.toString.call(this[i]) !== '[object Object]') continue;
       if (this[i].hasOwnProperty(key)) return this[i];
     }
+  },
+  delete: function (v) {
+    var args = Array.prototype.slice.call(arguments);
+    if (args.length < 1) throw new Error('No value given');
+
+    var i = 0, last = null;
+
+    while (i < this.length) {
+      if (this[i] === v) {
+        last = this[i];
+        this.splice(i, 1);
+      } else {
+        i++;
+      }
+    }
+
+    return last;
   },
   drop: Array.prototype.slice,
   fetch: function(n, d) {
@@ -336,6 +366,17 @@ major(Number.prototype, {
 });
 
 major(Object.prototype, {
+  each: function(fn, after) {
+    var type = Object.prototype.toString.call(this);
+    if (type !== '[object Object]') return;
+    if (typeof fn !== 'function') throw new TypeError('Expected function');
+    for (var k in this) {
+      if (this.hasOwnProperty(k)) {
+        fn.call(this, k, this[k]);
+      }
+    }
+    return (typeof after === 'function'? after.call(this) : after);
+  },
   eql: function (o) {
     return this === o;
   }

@@ -12,6 +12,9 @@ Array methods can be overridden on instances.
 - `#compact`
 -- Returns a new array with all `undefined` values removed.
 
+- `#empty`
+-- Returns `true` if *self* has no elements, `false` otherwise.
+
 - `#sample`
 -- Returns a random value from the array. `undefined` if the array is empty.
 
@@ -30,6 +33,9 @@ Array methods can be overridden on instances.
 [{a: 1}, {b: 2}, {c: 3, b: 4}].assoc('b')
 >> {b: 2}
 ```
+
+- `#delete(value)`
+-- Removes all values that are strictly equal to *value* from the array. Modifies the original array. Returns the last value, or `null` if no values match.
 
 - `#drop()`
 -- is an alias of `Array.protoype.slice()`

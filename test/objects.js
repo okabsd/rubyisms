@@ -36,6 +36,24 @@ describe('Objects', function () {
     });
   });
 
+  describe('#empty', function () {
+    it('should return true if object has no keys, false otherwise', function () {
+      var o1 = {}, o2 = {a: 1}, o3 = {a: 1, b: 2};
+
+      expect(o1.empty).to.be.true;
+      expect(o2.empty).to.be.false;
+      expect(o3.empty).to.be.false;
+    });
+
+    it('should return undefined for non-objects. Strings & Arrays excempt.', function () {
+      expect(a.empty).to.false;
+      expect(b.empty).to.equal(undefined);
+      expect(f.empty).to.equal(undefined);
+      expect(n.empty).to.equal(undefined);
+      expect(s.empty).to.be.false;
+    });
+  });
+
   describe('#func', function () {
     it('should return true if object is function, false otherwise', function () {
       expect(a.func).to.be.false;

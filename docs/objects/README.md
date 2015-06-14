@@ -14,6 +14,9 @@ Object methods extend to all prototypes.
 - `#bool`
 -- Returns `true` if *self* is a boolean, `false` otherwise.
 
+- `#empty`
+-- Returns `true` if *self* has no own properties, `false` otherwise. Returns undefined on non-objects. *Note: **Array** and **String** have their own `#empty` methods.*
+
 - `#func`
 -- Returns `true` if *self* is a function, `false` otherwise.
 

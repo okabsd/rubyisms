@@ -31,6 +31,21 @@ describe('Arrays', function () {
     });
   });
 
+  describe('#empty', function () {
+    var a1 = [],
+        a2 = [1, 2, 3];
+
+    it('should return true if array has no elements, false otherwise', function () {
+      expect(a1.empty).to.be.true;
+      expect(a2.empty).to.be.false;
+    });
+
+    it('should not alter the original array', function () {
+      a1.should.deep.equal([]);
+      a2.should.deep.equal([1, 2, 3]);
+    });
+  });
+
   describe('#sample', function () {
     var foo = ['a', 'b'],
         bar = foo.sample;
@@ -103,6 +118,24 @@ describe('Arrays', function () {
 
     it('should not alter the original array', function () {
       assert.deepEqual(foo, [{a: 1}, 'bar', {b: 2}, {b: 4}]);
+    });
+  });
+
+  describe('#delete()', function () {
+    var a = [1, 2, 3, 3, 3],
+        a2 = [1, 2];
+
+    it('should return the last value removed, or null if no values removed', function () {
+      expect(a.delete(3)).to.equal(3);
+      expect(a2.delete(5)).to.equal(null);
+    });
+
+    it('should remove all instances of value given from self', function () {
+      a.should.deep.equal([1, 2]);
+    });
+
+    it('should modify the original array', function () {
+      a.should.not.deep.equal([1, 2, 3, 3, 3]);
     });
   });
 
