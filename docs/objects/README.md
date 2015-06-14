@@ -1,7 +1,9 @@
 # Objects
 
 Object methods can be overridden on prototypes.
+
 Object methods can be overridden on instances.
+
 Object methods extend to all prototypes.
 
 ## Minor

@@ -1,6 +1,7 @@
 # Booleans
 
 Boolean methods can be overridden on prototypes.
+
 Boolean methods can **not** be overridden on instances.
 
 ## Minor

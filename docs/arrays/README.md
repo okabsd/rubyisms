@@ -1,6 +1,7 @@
 # Arrays
 
 Array methods can be overridden on prototypes.
+
 Array methods can be overridden on instances.
 
 ## Minor

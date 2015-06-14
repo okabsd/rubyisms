@@ -1,6 +1,7 @@
 # Numbers
 
 Number methods can be overridden on prototypes.
+
 Number methods can **not** be overridden on instances.
 
 ## Minor
