@@ -15,7 +15,7 @@ Number methods can **not** be overridden on instances.
 -- Returns PI if negative, `0` otherwise.
 
 - `#ceil`
--- Reuturn the largest integer greater than or equal to *self*.
+-- Returns the largest integer greater than or equal to *self*.
 
 - `#even`
 -- Returns `true` if number is even, `false` otherwise.
@@ -29,6 +29,9 @@ Number methods can **not** be overridden on instances.
 - `#integer`
 -- Returns `true` if value is an integer, `false` otherwise.
 
+- `#next`
+-- Returns *self* `+ 1` if *self* is an integer.
+
 - `#nonzero`
 -- Return *self* if value is not `0`, `false` otherwise.
 
@@ -39,6 +42,9 @@ Number methods can **not** be overridden on instances.
 (-5).polar
 >> [5, 3.141592653589793]
 ```
+
+- `#pred`
+-- Returns *self* `- 1` if *self* is an integer.
 
 ## Major
 
