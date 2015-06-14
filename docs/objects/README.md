@@ -41,3 +41,6 @@ Object methods extend to all prototypes.
 
 - `#eql(value)`
 -- Returns `true` if *self* strictly equals the supplied argument, `false` otherise.
+
+- `#fetch(val, sub)`
+-- Returns value of *self*'s `val` property. If property does not exist *sub* is the return value. if *sub* is a function, the return value of invoking that function is returned.

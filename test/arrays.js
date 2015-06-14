@@ -121,6 +121,28 @@ describe('Arrays', function () {
     });
   });
 
+  describe('#cycle()', function () {
+    var a = [1, 2],
+        o = [],
+        c = 0;
+        a.cycle(2, function (e, i, l) {
+          c = l;
+          o.push(e);
+        });
+
+    it('should iteration the given amount of times, invoking its callback', function () {
+      c.should.equal(2);
+    });
+
+    it('should iterate through all of the array\'s elements each iteration', function () {
+      o.should.deep.equal([1, 2, 1, 2]);
+    });
+
+    it('should not alter the original array', function () {
+      a.should.deep.equal([1, 2]);
+    })
+  });
+
   describe('#delete()', function () {
     var a = [1, 2, 3, 3, 3],
         a2 = [1, 2];

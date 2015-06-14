@@ -34,6 +34,9 @@ Array methods can be overridden on instances.
 >> {b: 2}
 ```
 
+- `#cycle(n, callback, after)`
+-- Iterates *n* times, iterating on each element in *self* passing the element, the element's index, and the current iteration number to the *callback* function. Returns *after*, or the return value of invoking *after* if it is a function.
+
 - `#delete(value)`
 -- Removes all values that are strictly equal to *value* from the array. Modifies the original array. Returns the last value, or `null` if no values match.
 
@@ -50,8 +53,8 @@ Array methods can be overridden on instances.
 >> 'foo'
 ```
 
-- `#reject(fnCallback)`
--- Returns a new array containing each element from the original array that did not pass a given test.
+- `#reject(test)`
+-- Returns a new array containing with the elements that matched the *test* removed.
 
 ```JavaScript
 [1, '2', 3].reject(function (e) {return typeof e === 'number'});

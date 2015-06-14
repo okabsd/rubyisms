@@ -143,6 +143,50 @@ describe('Objects', function () {
 
   // Major methods
 
+  describe('#each()', function () {
+    var o2 = {a: 1, b: 2, c: 3},
+        out = [];
+        o2.each(function (k, v) {
+          out.push(k);
+          out.push(v);
+        });
+
+    it('should throw a TypeError if callback is not a function', function () {
+      expect(function () {
+        o2.each('hello', 'world');
+      }).to.throw(TypeError);
+    });
+
+    it('should iterate through the object, passing the key & value to the callback', function () {
+      out.should.deep.equal(['a', 1, 'b', 2, 'c', 3]);
+    });
+
+    it('should not work on non-objects. Strings excempt.', function () {
+      var fn = function () {};
+
+      expect(a.each(fn)).to.equal(undefined);
+      expect(b.each(fn)).to.equal(undefined);
+      expect(f.each(fn)).to.equal(undefined);
+      expect(n.each(fn)).to.equal(undefined);
+    });
+
+    describe('afterwards', function () {
+      it('should return the second parameter', function () {
+        expect(o2.each(function (){
+
+        }, 'test')).to.equal('test');
+      });
+
+      it('should invoke and return if second parameter is function', function () {
+        expect(o2.each(function () {
+
+        }, function () {
+          return 'test2';
+        })).to.equal('test2');
+      });
+    });
+  });
+
   describe('#eql()', function () {
     it('should compare objects strictly and return a boolean', function () {
       expect(a.eql(a)).to.be.true;
@@ -166,4 +210,42 @@ describe('Objects', function () {
       expect(s.eql(new String('foo'))).to.be.false;
     });
   });
+
+  describe('#fetch()', function () {
+    var o = {
+          a: 1,
+          b: '2',
+          c: true
+        }, 
+        o2 = {};
+
+    it('should return the value of the given property', function () {
+      expect(o.fetch('a')).to.equal(1);
+      expect(o.fetch('b')).to.equal('2');
+      expect(o.fetch('c')).to.equal(true);
+    });
+
+    it('should throw error when no value given', function () {
+      expect(function () {o.fetch()}).to.throw(Error);
+    });
+
+    describe('if property not found', function () {
+      it('should return the second parameter', function () {
+        expect(o2.fetch('h', 'yo')).to.equal('yo');
+      });
+
+      it('should invoke and return the second parameter if function', function () {
+        expect(o2.fetch('h', function () {
+          return 'test';
+        })).to.equal('test');
+      });
+    });
+
+    it('should not work on non-objects. Arrays excempt.', function () {
+      expect(b.fetch('h')).to.equal(undefined);
+      expect(f.fetch('h')).to.equal(undefined);
+      expect(n.fetch('h')).to.equal(undefined);
+      expect(s.fetch('h')).to.equal(undefined);
+    });
+  })
 });

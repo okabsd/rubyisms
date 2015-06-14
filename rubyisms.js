@@ -260,6 +260,21 @@ major(Array.prototype, {
       if (this[i].hasOwnProperty(key)) return this[i];
     }
   },
+  cycle: function (n, fn, after) {
+    var args = Array.prototype.slice.call(arguments).length;
+    if (args < 2) {
+      throw new Error('cycle requires 2 arguments, ' + args + ' given');
+    }
+    if (typeof fn !== 'function') throw new TypeError('Expected function');
+
+    for (var i = 1; i <= n; i++) {
+      for (var j = 0; j < this.length; j++) {
+        fn.call(this, this[j], j, i);
+      }
+    }
+
+    return (typeof after === 'function' ? after.call(this) : after);
+  },
   delete: function (v) {
     var args = Array.prototype.slice.call(arguments);
     if (args.length < 1) throw new Error('No value given');
@@ -379,6 +394,16 @@ major(Object.prototype, {
   },
   eql: function (o) {
     return this === o;
+  },
+  fetch: function (v, r) {
+    var type = Object.prototype.toString.call(this),
+        args = Array.prototype.slice.call(arguments);
+    if (type !== '[object Object]') return;
+    if (args.length < 1) throw new Error('No value given');
+
+    if (this.hasOwnProperty(v)) return this[v];
+
+    return (typeof r === 'function' ? r.call(this, v) : r)
   }
 });
 
