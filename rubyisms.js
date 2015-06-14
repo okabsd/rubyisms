@@ -35,7 +35,7 @@ function minor(prototype, o, callback) {
 
 function major(prototype, o, callback) {
   for (var k in o) {
-    if (!prototype.hasOwnProperty(k)) {
+    if (o.hasOwnProperty(k) && !prototype.hasOwnProperty(k)) {
       Object.defineProperty(prototype, k, {
         value: o[k],
         writable: true,
