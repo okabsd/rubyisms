@@ -10,9 +10,23 @@
 
 [![NPM version][npm-image]][npm-url] [![Downloads][npm-downloads]][npm-url] [![Build Status][travis-build]][travis-url]
 
-## Info
-
 A highly experimental set of prototype extensions for native types in ES5 JavaScript.
+
+## What are rubyisms?
+
+Rubyisms are methods that are easy on the eyes.
+
+Here's one in action.
+
+```JavaScript
+(5).times(function (n) {
+  console.log('Yo.');
+});
+```
+
+Sweet, huh?
+
+Rubyisms are a little slice of coding happiness.
 
 ## Install
 
@@ -22,7 +36,7 @@ Using [npm](https://www.npmjs.com/), of course.
 
 ## Documentation
 
-Full list of methods [here](https://github.com/Oka-/rubyisms/tree/master/docs).
+Get to know the methods, [here](https://github.com/Oka-/rubyisms/blob/master/docs/README.md).
 
 [npm-url]: https://www.npmjs.com/package/rubyisms
 [npm-image]: http://img.shields.io/npm/v/rubyisms.svg

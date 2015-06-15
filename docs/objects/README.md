@@ -15,7 +15,7 @@ Object methods extend to all prototypes.
 -- Returns `true` if *self* is a boolean, `false` otherwise.
 
 - `#empty`
--- Returns `true` if *self* has no own properties, `false` otherwise. Returns undefined on non-objects. *Note: **Array** and **String** have their own `#empty` methods.*
+-- Returns `true` if *self* has no own properties, `false` otherwise. Returns undefined on non-objects. *Note: __Array__ and __String__ have their own `#empty` methods.*
 
 - `#func`
 -- Returns `true` if *self* is a function, `false` otherwise.
