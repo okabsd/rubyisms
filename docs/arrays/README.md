@@ -34,6 +34,9 @@ Array methods can be overridden on instances.
 >> {b: 2}
 ```
 
+- `#count(var, bool)`
+-- Returns the number of elements in the array that strictly match *var*. If *var* is a function, it is treated a filter: `func(element, index) {}`, where truthy returns count as a match. To strictly check the array for functions, pass *bool* as `false`.
+
 - `#cycle(n, callback, after)`
 -- Iterates *n* times, iterating on each element in *self* passing the element, the element's index, and the current iteration number to the *callback* function. Returns *after*, or the return value of invoking *after* if it is a function.
 

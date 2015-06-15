@@ -121,6 +121,32 @@ describe('Arrays', function () {
     });
   });
 
+  describe('#count()',  function () {
+    var f = function () {},
+        test = function (e) { return typeof e === 'string';},
+        a = [1, 2, 2, 2, 3, 1, 'hello', f, test, 'test', true, true];
+
+    it('should return how many elements strictly matched the input', function () {
+      expect(a.count(2)).to.equal(3);
+      expect(a.count(1)).to.equal(2);
+      expect(a.count('hello')).to.equal(1);
+    });
+
+    describe('when passed a function', function () {
+      it('should use it as a filter', function () {
+        expect(a.count(test)).to.equal(2);
+      });
+
+      it('should not use it as a filter if the section parameter is false', function () {
+        expect(a.count(test, false)).to.equal(1);
+      });
+    });
+
+    it('should not not alter the original array', function () {
+      a.should.deep.equal([1, 2, 2, 2, 3, 1, 'hello', f, test, 'test', true, true]);
+    });
+  });
+
   describe('#cycle()', function () {
     var a = [1, 2],
         o = [],

@@ -63,43 +63,47 @@ minor(Array.prototype, {
   sample: function () {
     return this[Math.floor(Math.random() * this.length)];
   },
-  uniq: function () {
-    var s = {}, b = {}, n = {}, u = {}, o = {}, r = [], c = 0, p, i, k, item, type;
-  
-    for (i = 0; i < this.length; i++) {
-      item = this[i];
-      type = Object.prototype.toString.call(item);
-      p = true;
-      if (type === '[object String]' && !s.hasOwnProperty(item)) {
-        s[item] = true; r.push(item);
-      } else if (type === '[object Boolean]' && !b.hasOwnProperty(item)) {
-        b[item] = true; r.push(item);
-      } else if (type === '[object Number]' && !n.hasOwnProperty(item)) {
-        n[item] = true; r.push(item);
-      } else if (type === '[object Object]' ||
-                 type === '[object Function]' ||
-                 type === '[object Array]') {
-        obj:
-        for (k in o) {
-          if (o.hasOwnProperty(k) && item === o[k]) {
-            p = false;
-            break obj;
-          }
-        }
-        if (p) {
-          o[c] = item;
-          r.push(item);
-          c++;
-        }
-      } else if ((type === '[object Undefined]' ||
-                  type === '[object Null]') &&
-                  !u.hasOwnProperty(item)) {
-        u[item] = true; r.push(item);
-      }
-    }
+  uniq: (function () {
+    var arr  = '[object Array]',
+        bool = '[object Boolean]',
+        func = '[object Function]', 
+        nul  = '[object Null]',
+        num  = '[object Number]',
+        obj  = '[object Object]',
+        str  = '[object String]',
+        und  = '[object Undefined]';
+
+    return (function () {
+      var s = {}, b = {}, n = {}, u = {}, o = [], r = [], i, c, k, p, item, type;
     
-    return r;
-  }
+      for (i = 0; i < this.length; i++) {
+        item = this[i];
+        type = Object.prototype.toString.call(item);
+        p = true;
+        if (type === str && !s.hasOwnProperty(item)) {
+          s[item] = true; r.push(item);
+        } else if (type === bool && !b.hasOwnProperty(item)) {
+          b[item] = true; r.push(item);
+        } else if (type === num && !n.hasOwnProperty(item)) {
+          n[item] = true; r.push(item);
+        } else if (type === obj || type === func || type === arr) {
+          for (c = 0; c < o.length; c++) {
+            if (o[c] === item) {
+              p = false;
+            }
+          }
+          if (p) {
+            o.push(item);
+            r.push(item);
+          }
+        } else if ((type === und || type === nul) && !u.hasOwnProperty(item)) {
+          u[item] = true; r.push(item);
+        }
+      }
+      
+      return r;
+    });
+  }())
 });
 
 minor(Boolean.prototype, {
@@ -272,6 +276,16 @@ major(Array.prototype, {
       if (Object.prototype.toString.call(this[i]) !== '[object Object]') continue;
       if (this[i].hasOwnProperty(key)) return this[i];
     }
+  },
+  count: function (vfn, f) {
+    var args = Array.prototype.slice.call(arguments).length;
+    if (args < 1) throw new Error('1 argument expected, got: ' + args);
+    var c = 0, i = 0, t = ((typeof f === 'undefined' ? true : f) 
+      && typeof vfn === 'function');
+    for (i; i < this.length; i++) {
+      if ((t && vfn.call(this, this[i], i)) || (!t && this[i] === vfn)) c++;
+    }
+    return c;
   },
   cycle: function (n, fn, after) {
     var args = Array.prototype.slice.call(arguments).length;
