@@ -1,6 +1,6 @@
 {
   "name": "rubyisms",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Ruby style ES5 prototype extensions.",
   "keywords": [
     "ES5",
