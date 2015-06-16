@@ -19,7 +19,7 @@ Rubyisms are methods that are easy on the eyes.
 Here's one in action.
 
 ```JavaScript
-(5).times(function (n) {
+(5).times(function () {
   console.log('Yo.');
 });
 ```
