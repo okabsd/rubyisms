@@ -8,6 +8,8 @@ require('../');
 describe('Strings', function () {
   // Minor methods
 
+  var oddity = '𝌆 bar mañana mañana';
+
   describe('#capitalize', function () {
     var foo = 'hello',
         bar = foo.capitalize;
@@ -27,6 +29,10 @@ describe('Strings', function () {
 
     it('should return an array of all characters in the string', function () {
       assert.deepEqual(bar, ['h', 'e', 'l', 'l', 'o']);
+    });
+
+    it('should work on non standard characters', function () {
+      expect(oddity.chars.join('')).to.equal(oddity);
     });
 
     it('should not affect the original', function () {
@@ -54,6 +60,10 @@ describe('Strings', function () {
 
     it('should return the first character in the string', function () {
       bar.should.equal('h');
+    });
+
+    it('should work on non standard characters', function () {
+      expect(oddity.chr).to.eql('𝌆');
     });
 
     it('should not affect the original', function () {
@@ -97,6 +107,10 @@ describe('Strings', function () {
 
     it('should return string with the characters in reverse order', function () {
       bar.should.equal('olleh');
+    });
+
+    it('should work on non standard characters', function () {
+      expect(oddity.reverse.reverse).to.equal(oddity);
     });
 
     it('should not affect the original', function () {

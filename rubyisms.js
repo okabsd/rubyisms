@@ -4,10 +4,27 @@
 
 ;(function (G) {
 'use strict';
+
+var _bin = {
+  regex: {
+    symbolWithCombiningMarks: /([\0-\u02FF\u0370-\u1AAF\u1B00-\u1DBF\u1E00-\u20CF\u2100-\uD7FF\uE000-\uFE1F\uFE30-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])([\u0300-\u036F\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]+)/g,
+    surrogatePair: /([\uD800-\uDBFF])([\uDC00-\uDFFF])/g
+  },
+  types: {
+    arr  : '[object Array]',
+    bool : '[object Boolean]',
+    func : '[object Function]', 
+    nul  : '[object Null]',
+    num  : '[object Number]',
+    obj  : '[object Object]',
+    str  : '[object String]',
+    und  : '[object Undefined]'
+  }
+};
     
 function define(s, v) {
   var type = Object.prototype.toString.call(this),
-      isObject = (type === '[object Object]');
+      isObject = (type === _bin.types.obj);
 
   delete this[s]; 
   Object.defineProperty(this, s, {
@@ -64,17 +81,17 @@ minor(Array.prototype, {
     return this[Math.floor(Math.random() * this.length)];
   },
   uniq: (function () {
-    var arr  = '[object Array]',
-        bool = '[object Boolean]',
-        func = '[object Function]', 
-        nul  = '[object Null]',
-        num  = '[object Number]',
-        obj  = '[object Object]',
-        str  = '[object String]',
-        und  = '[object Undefined]';
+    var arr  = _bin.types.arr,
+        bool = _bin.types.bool,
+        func = _bin.types.func, 
+        nul  = _bin.types.nul,
+        num  = _bin.types.num,
+        obj  = _bin.types.obj,
+        str  = _bin.types.str,
+        und  = _bin.types.und;
 
     return (function () {
-      var s = {}, b = {}, n = {}, u = {}, o = [], r = [], i, c, k, p, item, type;
+      var s = {}, b = {}, n = {}, u = {}, o = [], r = [], i, c, p, item, type;
     
       for (i = 0; i < this.length; i++) {
         item = this[i];
@@ -87,9 +104,11 @@ minor(Array.prototype, {
         } else if (type === num && !n.hasOwnProperty(item)) {
           n[item] = true; r.push(item);
         } else if (type === obj || type === func || type === arr) {
+          objs:
           for (c = 0; c < o.length; c++) {
             if (o[c] === item) {
               p = false;
+              break objs;
             }
           }
           if (p) {
@@ -178,37 +197,37 @@ minor(Number.prototype, {
 
 minor(Object.prototype, {
   array: function () {
-    return Object.prototype.toString.call(this) === '[object Array]';
+    return Object.prototype.toString.call(this) === _bin.types.arr;
   },
   bool: function () {
-    return Object.prototype.toString.call(this) === '[object Boolean]';
+    return Object.prototype.toString.call(this) === _bin.types.bool;
   },
   empty: function () {
     var type = Object.prototype.toString.call(this);
-    if (type === '[object Object]') {
+    if (type === _bin.types.obj) {
       return Object.keys(this).length < 1;
     }
   },
   func: function () {
-    return Object.prototype.toString.call(this) === '[object Function]';
+    return Object.prototype.toString.call(this) === _bin.types.func;
   },
   numeric: function () {
-    return Object.prototype.toString.call(this) === '[object Number]' && this === this;
+    return Object.prototype.toString.call(this) === _bin.types.num && this === this;
   },
   object: function () {
-    return Object.prototype.toString.call(this) === '[object Object]';
+    return Object.prototype.toString.call(this) === _bin.types.obj;
   },
   size: function () {
     var type = Object.prototype.toString.call(this);
-    if (type === '[object Array]' ||
-        type === '[object String]' ||
-        type === '[object Function]') return this.length;
-    else if (type === '[object Object]') return Object.keys(this).length;
-    else if (type === '[object Boolean]') return (this ? 1 : 0);
-    else if (type === '[object Number]' && this === this) return this;
+    if (type === _bin.types.arr ||
+        type === _bin.types.str ||
+        type === _bin.types.func) return this.length;
+    else if (type === _bin.types.obj) return Object.keys(this).length;
+    else if (type === _bin.types.bool) return (this ? 1 : 0);
+    else if (type === _bin.types.num && this === this) return this;
   },
   string: function () {
-    return Object.prototype.toString.call(this) === '[object String]';
+    return Object.prototype.toString.call(this) === _bin.types.str;
   },
   type: function () {
     var t = Object.prototype.toString.call(this).match(/\w+(?=\])/)[0].toLowerCase();
@@ -216,7 +235,7 @@ minor(Object.prototype, {
   }
 }, function (key) {
   // Unset globals
-  G[key] = undefined;
+  delete G[key];
 });
 
 minor(String.prototype, {
@@ -224,13 +243,37 @@ minor(String.prototype, {
     return this.substring(0, 1).toUpperCase() + this.substring(1);
   },
   chars: function () {
-    return this.split('');
+    var i, c, len = this.length, r = [];
+    for (i = 0; i < len; i++) {
+      c = this.substr(i, 2);
+      if (_bin.regex.surrogatePair.test(c) || 
+        _bin.regex.symbolWithCombiningMarks.test(c)) {
+        r.push(c);
+        i++;
+      } else {
+        r.push(this.substr(i, 1));
+      }
+    }
+    return r;
   },
   chop: function () {
-    return this.slice(0, this.length - 1);
+    var c = this.substr(this.length - 2, 2);
+
+    if (_bin.regex.surrogatePair.test(c) || 
+        _bin.regex.symbolWithCombiningMarks.test(c)) {
+      return this.substr(0, this.length - 2);
+    } else {
+      return this.substring(0, this.length - 1);
+    }
   },
   chr: function () {
-    return this.substring(0, 1);
+    var c = this.substring(0, 2);
+    if (_bin.regex.surrogatePair.test(c) || 
+        _bin.regex.symbolWithCombiningMarks.test(c)) {
+      return c;
+    } else {
+      return c.substring(0, 1);
+    }
   },
   downcase: function () {
     return this.toLowerCase();
@@ -240,28 +283,24 @@ minor(String.prototype, {
   },
   reverse: (function () {
     // Credit Mathias Bynens, github.com/mathiasbynens/esrever
-    var cM = /([\0-\u02FF\u0370-\u1AAF\u1B00-\u1DBF\u1E00-\u20CF\u2100-\uD7FF\uE000-\uFE1F\uFE30-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])([\u0300-\u036F\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]+)/g,
-        sP = /([\uD800-\uDBFF])([\uDC00-\uDFFF])/g;
-
-    function r (s) {
-      s = s.replace(cM, function($0, $1, $2) {
-          return r($2) + $1;
-        }).replace(sP, '$2$1');
-      var r = '', i = s.length;
-      while (i--) r += s.charAt(i);
-      return r;
+    function rev (s) {
+      s = s.replace(_bin.regex.symbolWithCombiningMarks, function($0, $1, $2) {
+          return rev($2) + $1;
+        }).replace(_bin.regex.surrogatePair, '$2$1');
+      var o = '', i = s.length;
+      while (i--) o += s.charAt(i);
+      return o;
     }
 
     return (function () {
-      return r(this);
+      return rev(this);
     });
   }()),
   swapcase: function () {
     var s = '', i, c;
     for (i = 0; i < this.length; i++) {
-      c = this[i].toUpperCase();
-      if (c === this[i]) c = this[i].toLowerCase();
-      s += c;
+      c = this.charAt(i).toUpperCase();
+      s += (c === this.charAt(i) ? c.toLowerCase() : c);
     }
     return s;
   },
@@ -273,15 +312,15 @@ minor(String.prototype, {
 major(Array.prototype, {
   assoc: function (key) {
     for (var i = 0; i < this.length; i++) {
-      if (Object.prototype.toString.call(this[i]) !== '[object Object]') continue;
+      if (Object.prototype.toString.call(this[i]) !== _bin.types.obj) continue;
       if (this[i].hasOwnProperty(key)) return this[i];
     }
   },
   count: function (vfn, f) {
     var args = Array.prototype.slice.call(arguments).length;
     if (args < 1) throw new Error('1 argument expected, got: ' + args);
-    var c = 0, i = 0, t = ((typeof f === 'undefined' ? true : f) 
-      && typeof vfn === 'function');
+    var c = 0, i = 0, t = ((typeof f === 'undefined' ? true : f) && 
+                            typeof vfn === 'function');
     for (i; i < this.length; i++) {
       if ((t && vfn.call(this, this[i], i)) || (!t && this[i] === vfn)) c++;
     }
@@ -372,7 +411,7 @@ major(Function.prototype, {});
 major(Number.prototype, {
   downto: function (n, fn, after) {
     var type = Object.prototype.toString.call(n);
-    if (type !== '[object Number]' || n.toFixed() != n) {
+    if (type !== _bin.types.num || n.toFixed() != n) {
       throw new TypeError('Integer value required');
     }
     if (this.toFixed() != this || this === Infinity) {
@@ -393,7 +432,7 @@ major(Number.prototype, {
   },
   upto: function (n, fn, after) {
     var type = Object.prototype.toString.call(n);
-    if (type !== '[object Number]' || n.toFixed() != n) {
+    if (type !== _bin.types.num || n.toFixed() != n) {
       throw new TypeError('Integer value required');
     }
     if (this.toFixed() != this || this === Infinity) {
@@ -410,7 +449,7 @@ major(Number.prototype, {
 major(Object.prototype, {
   each: function(fn, after) {
     var type = Object.prototype.toString.call(this);
-    if (type !== '[object Object]') return;
+    if (type !== _bin.types.obj) return;
     if (typeof fn !== 'function') throw new TypeError('Expected function');
     for (var k in this) {
       if (this.hasOwnProperty(k)) {
@@ -425,12 +464,12 @@ major(Object.prototype, {
   fetch: function (v, r) {
     var type = Object.prototype.toString.call(this),
         args = Array.prototype.slice.call(arguments);
-    if (type !== '[object Object]') return;
+    if (type !== _bin.types.obj) return;
     if (args.length < 1) throw new Error('No value given');
 
     if (this.hasOwnProperty(v)) return this[v];
 
-    return (typeof r === 'function' ? r.call(this, v) : r)
+    return (typeof r === 'function' ? r.call(this, v) : r);
   }
 });
 
