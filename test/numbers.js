@@ -126,7 +126,7 @@ describe('Numbers', function () {
       expect(even.odd).to.be.false;
       expect(posf.odd).to.be.false;
     });
-  }); 
+  });
 
   describe('#polar', function () {
     it('should return [absolute value of number, (PI if negative, 0 otherwise)]', function () {
