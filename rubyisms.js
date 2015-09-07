@@ -206,8 +206,7 @@ minor(Object.prototype, {
     return Object.prototype.toString.call(this) === _bin.types.bool;
   },
   empty: function () {
-    var type = Object.prototype.toString.call(this);
-    if (type === _bin.types.obj) {
+    if (Object.prototype.toString.call(this) === _bin.types.obj) {
       return Object.keys(this).length < 1;
     }
   },
@@ -215,16 +214,20 @@ minor(Object.prototype, {
     return Object.prototype.toString.call(this) === _bin.types.func;
   },
   numeric: function () {
-    return Object.prototype.toString.call(this) === _bin.types.num && this === this;
+    return (Object.prototype.toString.call(this) === _bin.types.num &&
+      this === this);
   },
   object: function () {
     return Object.prototype.toString.call(this) === _bin.types.obj;
   },
   size: function () {
     var type = Object.prototype.toString.call(this);
-    if (type === _bin.types.arr ||
-        type === _bin.types.str ||
-        type === _bin.types.func) return this.length;
+    
+    if (
+      type === _bin.types.arr ||
+      type === _bin.types.str ||
+      type === _bin.types.func
+    ) return this.length;
     else if (type === _bin.types.obj) return Object.keys(this).length;
     else if (type === _bin.types.bool) return (this ? 1 : 0);
     else if (type === _bin.types.num && this === this) return this;
@@ -233,12 +236,12 @@ minor(Object.prototype, {
     return Object.prototype.toString.call(this) === _bin.types.str;
   },
   type: function () {
-    var t = Object.prototype.toString.call(this).match(/\w+(?=\])/)[0].toLowerCase();
-    return (t === 'number' && this !== this ? 'NaN' : t);
+    var type = Object.prototype.toString.call(this).match(/\w+(?=\])/)[0].toLowerCase();
+    return (type === 'number' && this !== this ? 'NaN' : type);
   }
 }, function (key) {
   // Unset globals
-  delete G[key];
+  //delete G[key];
 });
 
 minor(String.prototype, {
