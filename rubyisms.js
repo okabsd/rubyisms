@@ -13,7 +13,7 @@ var _bin = {
   types: {
     arr  : '[object Array]',
     bool : '[object Boolean]',
-    func : '[object Function]', 
+    func : '[object Function]',
     nul  : '[object Null]',
     num  : '[object Number]',
     obj  : '[object Object]',
@@ -21,12 +21,11 @@ var _bin = {
     und  : '[object Undefined]'
   }
 };
-    
-function define(s, v) {
+
+function define (s, v) {
   var type = Object.prototype.toString.call(this),
       isObject = (type === _bin.types.obj);
 
-  delete this[s]; 
   Object.defineProperty(this, s, {
     value: v,
     writable: true,
@@ -35,13 +34,13 @@ function define(s, v) {
   });
 }
 
-function strap(g, s) {
-  return {get: g, set: function (v) {
+function strap (g, s) {
+  return { get: g, set: function (v) {
     define.call(this, s, v);
-  }, configurable: true};
+  }, configurable: true };
 }
 
-function minor(prototype, o, callback) {
+function minor (prototype, o, callback) {
   for (var k in o) {
     if (o.hasOwnProperty(k) && !prototype.hasOwnProperty(k)) {
       Object.defineProperty(prototype, k, strap(o[k], k));
@@ -50,7 +49,7 @@ function minor(prototype, o, callback) {
   }
 }
 
-function major(prototype, o, callback) {
+function major (prototype, o, callback) {
   for (var k in o) {
     if (o.hasOwnProperty(k) && !prototype.hasOwnProperty(k)) {
       Object.defineProperty(prototype, k, {
@@ -65,14 +64,18 @@ function major(prototype, o, callback) {
 
 minor(Array.prototype, {
   clear: function () {
-    while (this.length > 0) this.pop(); return this;
+    while (this.length > 0) this.pop();
+    return this;
   },
   compact: function () {
-    var o = [], i;
-    for (i = 0; i < this.length; i++) {
-      if(typeof this[i] !== 'undefined') o.push(this[i]);
+    var output = [], current;
+
+    for (var i = 0, length = this.length; i < length; i++) {
+      current = this[i];
+      if (typeof current !== 'undefined') output.push(current);
     }
-    return o;
+
+    return output;
   },
   empty: function () {
     return this.length < 1;
@@ -83,7 +86,7 @@ minor(Array.prototype, {
   uniq: (function () {
     var arr  = _bin.types.arr,
         bool = _bin.types.bool,
-        func = _bin.types.func, 
+        func = _bin.types.func,
         nul  = _bin.types.nul,
         num  = _bin.types.num,
         obj  = _bin.types.obj,
@@ -92,7 +95,7 @@ minor(Array.prototype, {
 
     return (function () {
       var s = {}, b = {}, n = {}, u = {}, o = [], r = [], i, c, p, item, type;
-    
+
       for (i = 0; i < this.length; i++) {
         item = this[i];
         type = Object.prototype.toString.call(item);
@@ -119,7 +122,7 @@ minor(Array.prototype, {
           u[item] = true; r.push(item);
         }
       }
-      
+
       return r;
     });
   }())
@@ -176,8 +179,8 @@ minor(Number.prototype, {
     return this.toFixed() == this && this % 2 !== 0;
   },
   polar: function () {
-    return (isFinite(this) && 
-    [Math.abs(this), (this < 0 ? Math.PI : 0)]) || 
+    return (isFinite(this) &&
+    [Math.abs(this), (this < 0 ? Math.PI : 0)]) ||
     undefined;
   },
   pred: function () {
@@ -246,7 +249,7 @@ minor(String.prototype, {
     var i, c, len = this.length, r = [];
     for (i = 0; i < len; i++) {
       c = this.substr(i, 2);
-      if (_bin.regex.surrogatePair.test(c) || 
+      if (_bin.regex.surrogatePair.test(c) ||
         _bin.regex.symbolWithCombiningMarks.test(c)) {
         r.push(c);
         i++;
@@ -259,7 +262,7 @@ minor(String.prototype, {
   chop: function () {
     var c = this.substr(this.length - 2, 2);
 
-    if (_bin.regex.surrogatePair.test(c) || 
+    if (_bin.regex.surrogatePair.test(c) ||
         _bin.regex.symbolWithCombiningMarks.test(c)) {
       return this.substr(0, this.length - 2);
     } else {
@@ -268,7 +271,7 @@ minor(String.prototype, {
   },
   chr: function () {
     var c = this.substring(0, 2);
-    if (_bin.regex.surrogatePair.test(c) || 
+    if (_bin.regex.surrogatePair.test(c) ||
         _bin.regex.symbolWithCombiningMarks.test(c)) {
       return c;
     } else {
@@ -297,12 +300,13 @@ minor(String.prototype, {
     });
   }()),
   swapcase: function () {
-    var s = '', i, c;
-    for (i = 0; i < this.length; i++) {
-      c = this.charAt(i).toUpperCase();
-      s += (c === this.charAt(i) ? c.toLowerCase() : c);
+    var current, up, output = '';
+    for (var index = 0, length = this.length; index < length; index++) {
+      current = this[index];
+      up = current.toUpperCase();
+      output += (current === up ? current.toLowerCase() : up);
     }
-    return s;
+    return output;
   },
   upcase: function () {
     return this.toUpperCase();
@@ -319,7 +323,7 @@ major(Array.prototype, {
   count: function (vfn, f) {
     var args = Array.prototype.slice.call(arguments).length;
     if (args < 1) throw new Error('1 argument expected, got: ' + args);
-    var c = 0, i = 0, t = ((typeof f === 'undefined' ? true : f) && 
+    var c = 0, i = 0, t = ((typeof f === 'undefined' ? true : f) &&
                             typeof vfn === 'function');
     for (i; i < this.length; i++) {
       if ((t && vfn.call(this, this[i], i)) || (!t && this[i] === vfn)) c++;
@@ -448,9 +452,8 @@ major(Number.prototype, {
 
 major(Object.prototype, {
   each: function(fn, after) {
-    var type = Object.prototype.toString.call(this);
-    if (type !== _bin.types.obj) return;
-    if (typeof fn !== 'function') throw new TypeError('Expected function');
+    if (Object.prototype.toString.call(this) !== _bin.types.obj) return;
+    if (typeof fn !== 'function') throw new TypeError('Expected function.');
     for (var k in this) {
       if (this.hasOwnProperty(k)) {
         fn.call(this, k, this[k]);
@@ -476,7 +479,7 @@ major(Object.prototype, {
 major(String.prototype, {
   each: function (fn, after) {
     if (typeof fn !== 'function') throw new TypeError('Expected function');
-    for (var i = 0; i < this.length; i++) {
+    for (var i = 0, length = this.length; i < length; i++) {
       fn.call(this, this[i], i);
     }
     return (typeof after === 'function'? after.call(this) : after);
@@ -486,4 +489,4 @@ major(String.prototype, {
   }
 });
 
-}((typeof window !== 'undefined' ? window : global)));
+}(this));
