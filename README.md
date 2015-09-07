@@ -18,7 +18,7 @@ Rubyisms are methods that are easy on the eyes.
 
 Here's one in action.
 
-```JavaScript
+```javascript
 (5).times(function () {
   console.log('Yo.');
 });
@@ -32,15 +32,17 @@ Rubyisms are a little slice of coding happiness.
 
 Using [npm](https://www.npmjs.com/), of course.
 
-    $ npm install rubyisms
+```shell
+$ npm install rubyisms
+```
 
 ## Documentation
 
-Get to know the methods, [here](https://github.com/Oka-/rubyisms/blob/master/docs/README.md).
+Get to know the methods, [here](https://github.com/Okahyphen/rubyisms/blob/master/docs/README.md).
 
 [npm-url]: https://www.npmjs.com/package/rubyisms
 [npm-image]: http://img.shields.io/npm/v/rubyisms.svg
 [npm-downloads]: http://img.shields.io/npm/dm/rubyisms.svg
 
-[travis-url]: https://travis-ci.org/Oka-/rubyisms
-[travis-build]: https://travis-ci.org/Oka-/rubyisms.svg?branch=master
+[travis-url]: https://travis-ci.org/Okahyphen/rubyisms
+[travis-build]: https://travis-ci.org/Okahyphen/rubyisms.svg?branch=master
