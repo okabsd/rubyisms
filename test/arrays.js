@@ -84,7 +84,7 @@ describe('Arrays', function () {
 
     it('should work on boolean values', function () {
       expect([true, true, false, false].uniq).to.deep.equal([true, false]);
-    })
+    });
 
     it('should work on string values', function () {
       var arr = ['one', 'two', 'two', 'one', 'three'];
@@ -137,7 +137,7 @@ describe('Arrays', function () {
         expect(a.count(test)).to.equal(2);
       });
 
-      it('should not use it as a filter if the section parameter is false', function () {
+      it('should not use it as a filter if the second parameter is false', function () {
         expect(a.count(test, false)).to.equal(1);
       });
     });
@@ -166,7 +166,7 @@ describe('Arrays', function () {
 
     it('should not alter the original array', function () {
       a.should.deep.equal([1, 2]);
-    })
+    });
   });
 
   describe('#delete()', function () {
@@ -197,7 +197,7 @@ describe('Arrays', function () {
 
     it('should not alter the original array', function () {
       bar.should.not.equal(foo);
-    })
+    });
   });
 
   describe('#fetch()', function () {
@@ -215,8 +215,8 @@ describe('Arrays', function () {
     });
 
     it('should throw RangeError on out of bounds index, with no substitute', function () {
-      expect(function () {foo.fetch(10)}).to.throw(RangeError);
-      expect(function () {foo.fetch(-10)}).to.throw(RangeError);
+      expect(function () {foo.fetch(10);}).to.throw(RangeError);
+      expect(function () {foo.fetch(-10);}).to.throw(RangeError);
     });
 
     it('should not alter the original array', function () {
@@ -236,6 +236,15 @@ describe('Arrays', function () {
 
     it('should not alter the original array', function () {
       assert.deepEqual(foo, [1, 'baz', 3]);
+    });
+
+    it('should throw a type error when passed a non-function', function () {
+      expect(function () {foo.reject(42);}).to.throw(TypeError);
+      expect(function () {foo.reject('');}).to.throw(TypeError);
+      expect(function () {foo.reject(true);}).to.throw(TypeError);
+      expect(function () {foo.reject(null);}).to.throw(TypeError);
+      expect(function () {foo.reject({});}).to.throw(TypeError);
+      expect(function () {foo.reject();}).to.throw(TypeError);
     });
   });
 
@@ -271,6 +280,12 @@ describe('Arrays', function () {
 
     it('should not alter the original array', function () {
       assert.deepEqual(foo, [1, 'baz', 3]);
+    });
+
+    it('should work for negative values', function () {
+      var qar = foo.valuesAt(0, -1, -2);
+
+      assert.deepEqual(qar, [1, 3, 'baz']);
     });
   });
 

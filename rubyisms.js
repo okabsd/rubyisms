@@ -22,6 +22,7 @@ var _bin = {
   }
 };
 
+/* jshint -W040 */
 function define (s, v) {
   var type = Object.prototype.toString.call(this),
       isObject = (type === _bin.types.obj);
@@ -33,6 +34,7 @@ function define (s, v) {
     configurable: true
   });
 }
+/* jshint +W040 */
 
 function strap (g, s) {
   return { get: g, set: function (v) {
@@ -222,7 +224,7 @@ minor(Object.prototype, {
   },
   size: function () {
     var type = Object.prototype.toString.call(this);
-    
+
     if (
       type === _bin.types.arr ||
       type === _bin.types.str ||
@@ -246,39 +248,45 @@ minor(Object.prototype, {
 
 minor(String.prototype, {
   capitalize: function () {
-    return this.substring(0, 1).toUpperCase() + this.substring(1);
+    return this.charAt(0).toUpperCase() + this.substring(1);
   },
   chars: function () {
-    var i, c, len = this.length, r = [];
-    for (i = 0; i < len; i++) {
-      c = this.substr(i, 2);
-      if (_bin.regex.surrogatePair.test(c) ||
-        _bin.regex.symbolWithCombiningMarks.test(c)) {
-        r.push(c);
-        i++;
+    var output = [], current;
+
+    for (var index = 0, length = this.length; index < length; index++) {
+      current = this.substr(index, 2);
+
+      if (
+        _bin.regex.surrogatePair.test(current) ||
+        _bin.regex.symbolWithCombiningMarks.test(current)
+      ) {
+        output.push(current);
+        index++;
       } else {
-        r.push(this.substr(i, 1));
+        output.push(this.substr(index, 1));
       }
     }
-    return r;
+    return output;
   },
   chop: function () {
-    var c = this.substr(this.length - 2, 2);
+    var length = this.length,
+        end = this.substr(length - 2, 2);
 
-    if (_bin.regex.surrogatePair.test(c) ||
-        _bin.regex.symbolWithCombiningMarks.test(c)) {
-      return this.substr(0, this.length - 2);
+    if (_bin.regex.surrogatePair.test(end) ||
+        _bin.regex.symbolWithCombiningMarks.test(end)) {
+      return this.substr(0, length - 2);
     } else {
-      return this.substring(0, this.length - 1);
+      return this.substring(0, length - 1);
     }
   },
   chr: function () {
-    var c = this.substring(0, 2);
-    if (_bin.regex.surrogatePair.test(c) ||
-        _bin.regex.symbolWithCombiningMarks.test(c)) {
-      return c;
+    var front = this.substring(0, 2);
+
+    if (_bin.regex.surrogatePair.test(front) ||
+        _bin.regex.symbolWithCombiningMarks.test(front)) {
+      return front;
     } else {
-      return c.substring(0, 1);
+      return this.charAt(0);
     }
   },
   downcase: function () {
@@ -289,13 +297,20 @@ minor(String.prototype, {
   },
   reverse: (function () {
     // Credit Mathias Bynens, github.com/mathiasbynens/esrever
-    function rev (s) {
-      s = s.replace(_bin.regex.symbolWithCombiningMarks, function($0, $1, $2) {
+    function rev (string) {
+      var index, output = '';
+
+      string = string
+        .replace(_bin.regex.symbolWithCombiningMarks, function ($0, $1, $2) {
           return rev($2) + $1;
-        }).replace(_bin.regex.surrogatePair, '$2$1');
-      var o = '', i = s.length;
-      while (i--) o += s.charAt(i);
-      return o;
+        })
+        .replace(_bin.regex.surrogatePair, '$2$1');
+
+      index = string.length;
+
+      while (index--) output += string.charAt(index);
+
+      return output;
     }
 
     return (function () {
@@ -304,6 +319,7 @@ minor(String.prototype, {
   }()),
   swapcase: function () {
     var current, up, output = '';
+
     for (var index = 0, length = this.length; index < length; index++) {
       current = this[index];
       up = current.toUpperCase();
@@ -318,96 +334,154 @@ minor(String.prototype, {
 
 major(Array.prototype, {
   assoc: function (key) {
-    for (var i = 0; i < this.length; i++) {
-      if (Object.prototype.toString.call(this[i]) !== _bin.types.obj) continue;
-      if (this[i].hasOwnProperty(key)) return this[i];
-    }
-  },
-  count: function (vfn, f) {
-    var args = Array.prototype.slice.call(arguments).length;
-    if (args < 1) throw new Error('1 argument expected, got: ' + args);
-    var c = 0, i = 0, t = ((typeof f === 'undefined' ? true : f) &&
-                            typeof vfn === 'function');
-    for (i; i < this.length; i++) {
-      if ((t && vfn.call(this, this[i], i)) || (!t && this[i] === vfn)) c++;
-    }
-    return c;
-  },
-  cycle: function (n, fn, after) {
-    var args = Array.prototype.slice.call(arguments).length;
-    if (args < 2) {
-      throw new Error('cycle requires 2 arguments, ' + args + ' given');
-    }
-    if (typeof fn !== 'function') throw new TypeError('Expected function');
+    var current;
 
-    for (var i = 1; i <= n; i++) {
-      for (var j = 0; j < this.length; j++) {
-        fn.call(this, this[j], j, i);
+    for (var index = 0, length = this.length; index < length; index++) {
+      current = this[index];
+
+      if (Object.prototype.toString.call(current) !== _bin.types.obj) continue;
+      if (current.hasOwnProperty(key)) return current;
+    }
+  },
+  count: function (obtest, usefunc) {
+    var argc = arguments.length,
+        count, index, length, element;
+
+    if (argc < 1) throw new Error('1 argument expected, got: ' + argc);
+
+    count = index = 0;
+    length = this.length;
+    usefunc = (typeof obtest === 'function') &&
+      (typeof usefunc === 'undefined' ? true : usefunc);
+
+    for (; index < length; index++) {
+      element = this[index];
+
+      if (
+        (usefunc && obtest.call(this, element, index)) ||
+        (!usefunc && element === obtest)
+      ) count++;
+    }
+
+    return count;
+  },
+  cycle: function (count, callback, after) {
+    var argc = arguments.length,
+        cycle, index, length;
+
+    if (argc < 2)
+      throw new Error('cycle requires 2 arguments, ' + argc + ' given');
+    else if (typeof callback !== 'function')
+      throw new TypeError('Expected function');
+
+    length = this.length;
+
+    for (cycle = 1; cycle <= count; cycle++) {
+      for (index = 0; index < length; index++) {
+        callback.call(this, this[index], index, cycle);
       }
     }
 
     return (typeof after === 'function' ? after.call(this) : after);
   },
-  delete: function (v) {
-    var args = Array.prototype.slice.call(arguments);
-    if (args.length < 1) throw new Error('No value given');
+  delete: function (value) {
+    var argc = arguments.length,
+        index, current, last;
 
-    var i = 0, last = null;
+    if (argc < 1) throw new Error('No value given');
 
-    while (i < this.length) {
-      if (this[i] === v) {
-        last = this[i];
-        this.splice(i, 1);
-      } else {
-        i++;
+    index = this.length;
+    last = null;
+
+    while (index--) {
+      current = this[index];
+
+      if (current === value) {
+        this.splice(index, 1);
+        last = current;
       }
     }
 
     return last;
   },
   drop: Array.prototype.slice,
-  fetch: function(n, d) {
-    if (typeof n !== 'number' || !isFinite(n)) throw new TypeError('Expected number');
-    if (Math.abs(n) > this.length - 1 && typeof d === 'undefined') throw new RangeError('Index out of bounds');
-    if (n < 0) n = this.length + n;
-    return (typeof this[n] !== 'undefined' ? this[n] : d);
+  fetch: function (index, substitute) {
+    var length = this.length,
+        value;
+
+    if (typeof index !== 'number' || !isFinite(index))
+      throw new TypeError('Expected number');
+    else if (Math.abs(index) >= length && typeof substitute === 'undefined')
+      throw new RangeError('Index out of bounds');
+
+    if (index < 0)
+      index = length + index;
+
+    value = this[index];
+
+    return (typeof value !== 'undefined' ? value : substitute);
   },
-  reject: function (f) {
-    var a = [], i;
-    for (i = 0; i < this.length; i++) {
-      if (!f.call(null, this[i], i)) a.push(this[i]);
+  reject: function (test) {
+    var output, length,
+        element, index;
+
+    if (typeof test !== 'function')
+      throw new TypeError('Excpected function');
+
+    output = [];
+    index = 0;
+    length = this.length;
+
+    for (; index < length; index++) {
+      element = this[index];
+      if (!test.call(this, element, index)) output.push(this[index]);
     }
-    return a;
+
+    return output;
   },
   select: Array.prototype.filter,
-  take: function (n) {
-    return this.slice().splice(0, n);
+  take: function (length) {
+    return this.slice().splice(0, length);
   },
   valuesAt: function () {
-    var a = Array.prototype.slice.call(arguments),
-        o = [], i;
+    var argc = arguments.length,
+        length = this.length,
+        output = [],
+        index = 0,
+        position;
 
-    for (i = 0; i < a.length; i++) {
-      if (typeof a[i] !== 'number' || !isFinite(a[i])) throw new TypeError('Expected index');
-      if (a[i] < 0) a[i] = this.length + a[i];
-      o.push(this[a[i]]);
-    }
+    if (length) {
+      for (; index < argc; index++) {
+        position = arguments[index];
 
-    return o;
-  },
-  zip: function() {
-    var a = Array.prototype.slice.call(arguments),
-        o = [], i, j, q;
+        if (position < 0) {
+          position = length + position;
+        }
 
-    for (i = 0; i < this.length; i++) {
-      q = [this[i]];
-      for(j = 0; j < a.length; j++) {
-        q.push(a[j][i]);
+        output.push(this[position]);
       }
-      o.push(q);
     }
 
-    return o;
+    return output;
+  },
+  zip: function () {
+    var argc = arguments.length,
+        length = this.length,
+        output = [],
+        index = 0,
+        tempArray, argIndex;
+
+    for (; index < length; index++) {
+      tempArray = [this[index]];
+
+      for (argIndex = 0; argIndex < argc; argIndex++) {
+        tempArray.push(arguments[argIndex][index]);
+      }
+
+      output.push(tempArray);
+    }
+
+    return output;
   }
 });
 
@@ -454,7 +528,7 @@ major(Number.prototype, {
 });
 
 major(Object.prototype, {
-  each: function(fn, after) {
+  each: function (fn, after) {
     if (Object.prototype.toString.call(this) !== _bin.types.obj) return;
     if (typeof fn !== 'function') throw new TypeError('Expected function.');
     for (var k in this) {
