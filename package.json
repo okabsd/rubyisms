@@ -13,7 +13,7 @@
   "main": "rubyisms.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Oka-/rubyisms"
+    "url": "https://github.com/Okahyphen/rubyisms"
   },
   "scripts": {
     "test": "npm run test-arrays && npm run test-booleans && npm run test-functions && npm run test-numbers && npm run test-objects && npm run test-strings",

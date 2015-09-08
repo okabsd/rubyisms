@@ -20,7 +20,7 @@ describe('Strings', function () {
 
     it('should not affect the original', function () {
       foo.should.equal('hello');
-    })
+    });
   });
 
   describe('#chars', function () {
@@ -49,9 +49,15 @@ describe('Strings', function () {
       expect(''.chop).to.equal('');
     });
 
+    it('should remove \\r\\n from the end of a string', function () {
+      var qar = 'hello\r\n';
+
+      expect(qar.chop).to.equal('hello');
+    });
+
     it('should not affect the original', function () {
       foo.should.equal('hello');
-    });  
+    });
   });
 
   describe('#chr', function () {
@@ -93,7 +99,7 @@ describe('Strings', function () {
     it('should return boolean value, true if string is empty, false if not', function () {
       bar.should.be.false;
       baz.should.be.true;
-    })
+    });
 
     it('should not affect the original', function () {
       foo.should.equal('hello');
@@ -115,12 +121,12 @@ describe('Strings', function () {
 
     it('should not affect the original', function () {
       foo.should.equal('hello');
-    }); 
+    });
   });
 
   describe('#swapcase', function () {
     var foo = 'HeLlO',
-        bar = foo.swapcase
+        bar = foo.swapcase;
 
     it('should return a string with each character swapped in case', function () {
       bar.should.equal('hElLo');
@@ -160,7 +166,7 @@ describe('Strings', function () {
 
     it('should not affect the original', function () {
       foo.should.equal('hello');
-    })
+    });
   });
 
   describe('#prepend()', function () {
