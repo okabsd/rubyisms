@@ -25,11 +25,11 @@ var regex = {
 };
 
 /* jshint -W040 */
-function define (s, v) {
+function define (property, value) {
   var isObject = (toString.call(this) === types.obj);
 
-  Object.defineProperty(this, s, {
-    value: v,
+  Object.defineProperty(this, property, {
+    value: value,
     writable: true,
     enumerable: isObject,
     configurable: true
@@ -37,32 +37,32 @@ function define (s, v) {
 }
 /* jshint +W040 */
 
-function strap (g, s) {
-  return { get: g, set: function (v) {
-    define.call(this, s, v);
+function strap (property, method) {
+  return { get: method, set: function (value) {
+    define.call(this, property, value);
   }, configurable: true };
 }
 
-function minor (prototype, o, callback) {
-  for (var k in o) {
-    if (o.hasOwnProperty(k) && !prototype.hasOwnProperty(k)) {
-      Object.defineProperty(prototype, k, strap(o[k], k));
-      if (callback) callback.call(null, k);
+function minor (prototype, object, callback) {
+  Object.keys(object).forEach(function (key) {
+    if (!prototype.hasOwnProperty(key)) {
+      Object.defineProperty(prototype, key, strap(key, object[key]));
+      if (callback) callback(key);
     }
-  }
+  });
 }
 
-function major (prototype, o, callback) {
-  for (var k in o) {
-    if (o.hasOwnProperty(k) && !prototype.hasOwnProperty(k)) {
-      Object.defineProperty(prototype, k, {
-        value: o[k],
+function major (prototype, object, callback) {
+  Object.keys(object).forEach(function (key) {
+    if (!prototype.hasOwnProperty(key)) {
+      Object.defineProperty(prototype, key, {
+        value: object[key],
         writable: true,
         configurable: true
       });
-      if (callback) callback.call(null, k);
+      if (callback) callback(key);
     }
-  }
+  });
 }
 
 minor(Array.prototype, {
@@ -520,7 +520,7 @@ major(Number.prototype, {
 
     for (; start >= end; start--) callback.call(this, start);
 
-    return (typeof after === 'function'? after.call(this) : after);
+    return (typeof after === 'function' ? after.call(this) : after);
   },
   times: function (callback, after) {
     var start = 1,
@@ -531,7 +531,7 @@ major(Number.prototype, {
 
     for (; start <= end; start++) callback.call(this, start);
 
-    return (typeof after === 'function'? after.call(this) : after);
+    return (typeof after === 'function' ? after.call(this) : after);
   },
   upto: function (end, callback, after) {
     var start = this;
@@ -545,7 +545,7 @@ major(Number.prototype, {
 
     for (; start <= end; start++) callback.call(this, start);
 
-    return (typeof after === 'function'? after.call(this) : after);
+    return (typeof after === 'function' ? after.call(this) : after);
   }
 });
 
@@ -567,10 +567,10 @@ major(Object.prototype, {
       callback.call(this, property, this[property]);
     }
 
-    return (typeof after === 'function'? after.call(this) : after);
+    return (typeof after === 'function' ? after.call(this) : after);
   },
-  eql: function (o) {
-    return this === o;
+  eql: function (object) {
+    return this === object;
   },
   fetch: function (key, substitute) {
     if (toString.call(this) !== types.obj)
@@ -600,10 +600,10 @@ major(String.prototype, {
       callback.call(this, this.charAt(index), index);
     }
 
-    return (typeof after === 'function'? after.call(this) : after);
+    return (typeof after === 'function' ? after.call(this) : after);
   },
-  prepend: function (o) {
-    return o + this;
+  prepend: function (object) {
+    return object + this;
   }
 });
 
