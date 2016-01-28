@@ -15,6 +15,12 @@ Array methods can be overridden on instances.
 - `#empty`
 -- Returns `true` if *self* has no elements, `false` otherwise.
 
+- `#first`
+-- Returns first element of *self*, or `undefined` if empty.
+
+- `#last`
+-- Returns last element of *self*, or `undefined` if empty.
+
 - `#sample`
 -- Returns a random value from the array. `undefined` if the array is empty.
 
@@ -32,6 +38,18 @@ Array methods can be overridden on instances.
 ```
 [{a: 1}, {b: 2}, {c: 3, b: 4}].assoc('b')
 >> {b: 2}
+```
+
+- `#at(index)`
+-- Returns the value in *self* at the `index`. If `index` is negative, position calculated from end of *self*. Does not wrap around indices. Out of bounds returns `undefined`. `index` defaults to position `0`.
+
+```
+['a', 'b', 'c'].at(2)
+>> 'c'
+['x', 'y', 'z'].at(-1)
+>> 'z'
+['y', 'o'].at(2)
+>> undefined
 ```
 
 - `#count(var, bool)`

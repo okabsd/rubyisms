@@ -1,13 +1,16 @@
-var chai = require('chai'),
-  assert = chai.assert,
-  expect = chai.expect,
-  should = chai.should();
+/* globals describe, it */
+/* jshint -W030 */
+
+var
+chai   = require('chai'),
+assert = chai.assert,
+expect = chai.expect;
+
+chai.should();
 
 require('../');
 
-describe('Strings', function () {
-  // Minor methods
-
+describe('Strings::MinorMethods', function () {
   var oddity = '𝌆 bar mañana mañana';
 
   describe('#capitalize', function () {
@@ -150,8 +153,9 @@ describe('Strings', function () {
     });
   });
 
-  // Major methods
+});
 
+describe('Strings::MajorMethods', function () {
   describe('#each()', function () {
     var foo = 'hello',
         out = [];

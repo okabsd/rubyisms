@@ -1,15 +1,19 @@
-var chai = require('chai'),
-  assert = chai.assert,
-  expect = chai.expect,
-  should = chai.should();
+/* globals describe, it */
+/* jshint -W030 */
+
+var
+chai   = require('chai'),
+// assert = chai.assert,
+expect = chai.expect;
+
+chai.should();
 
 require('../');
 
-describe('Objects', function () {
-  // Minor methods
+describe('Objects::MinorMethods', function () {
   var a = [1, 'bar', 3, undefined, 5],
       b = true,
-      f = function (one, two) {},
+      f = function (one, two) { one * two; },
       n = 5,
       o = {a: 1, b: 2},
       s = 'foo';
@@ -46,11 +50,11 @@ describe('Objects', function () {
     });
 
     it('should return undefined for non-objects. Strings & Arrays excempt.', function () {
-      expect(a.empty).to.false;
+      if (expect(a.empty).to.false);
       expect(b.empty).to.equal(undefined);
       expect(f.empty).to.equal(undefined);
       expect(n.empty).to.equal(undefined);
-      expect(s.empty).to.be.false;
+      if (expect(s.empty).to.be.false);
     });
   });
 
@@ -98,23 +102,22 @@ describe('Objects', function () {
     it('should return a numeric value for booleans', function () {
       expect(true.size).to.equal(1);
       expect(false.size).to.equal(0);
-    })
+    });
 
     it('should return the number of arguments a function has defined', function () {
       expect(f.size).to.equal(2);
     });
 
     it('should return the length of an objects properties', function () {
-      expect(o.size).to.equal(2)
+      expect(o.size).to.equal(2);
     });
 
     it('should return a numeric value\'s value', function () {
       expect(n.size).to.equal(5);
       expect(NaN.size).to.equal(undefined);
       expect(Infinity.size).to.equal(Infinity);
-    })
+    });
   });
-
 
   describe('#string', function () {
     it('should return true if object is string, false otherwise', function () {
@@ -124,6 +127,7 @@ describe('Objects', function () {
       expect(n.string).to.be.false;
       expect(o.string).to.be.false;
       expect(s.string).to.be.true;
+      /* jshint -W053 */
       expect(new String('hello').string).to.be.true;
     });
   });
@@ -141,7 +145,15 @@ describe('Objects', function () {
     });
   });
 
-  // Major methods
+});
+
+describe('Objects::MajorMethods', function () {
+  var a = [1, 'bar', 3, undefined, 5],
+      b = true,
+      f = function (one, two) { one * two; },
+      n = 5,
+      o = {a: 1, b: 2},
+      s = 'foo';
 
   describe('#each()', function () {
     var o2 = {a: 1, b: 2, c: 3},
@@ -207,6 +219,7 @@ describe('Objects', function () {
 
       expect(s.eql(s)).to.be.true;
       expect(s.eql('foo')).to.be.true;
+      /* jshint -W053 */
       expect(s.eql(new String('foo'))).to.be.false;
     });
   });
@@ -216,7 +229,7 @@ describe('Objects', function () {
           a: 1,
           b: '2',
           c: true
-        }, 
+        },
         o2 = {};
 
     it('should return the value of the given property', function () {
@@ -226,7 +239,7 @@ describe('Objects', function () {
     });
 
     it('should throw error when no value given', function () {
-      expect(function () {o.fetch()}).to.throw(Error);
+      expect(function () { o.fetch(); }).to.throw(Error);
     });
 
     describe('if property not found', function () {
@@ -247,5 +260,5 @@ describe('Objects', function () {
       expect(n.fetch('h')).to.equal(undefined);
       expect(s.fetch('h')).to.equal(undefined);
     });
-  })
+  });
 });

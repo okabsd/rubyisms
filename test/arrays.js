@@ -1,13 +1,16 @@
-var chai = require('chai'),
-  assert = chai.assert,
-  expect = chai.expect,
-  should = chai.should();
+/* globals describe, it */
+/* jshint -W030 */
+
+var
+chai   = require('chai'),
+assert = chai.assert,
+expect = chai.expect;
+
+chai.should();
 
 require('../');
 
-describe('Arrays', function () {
-  // Minor methods
-
+describe('Arrays::MinorMethods', function () {
   describe('#clear', function () {
     it('should empty the array in place', function () {
       var foo = [1, 2, 3];
@@ -18,7 +21,7 @@ describe('Arrays', function () {
   });
 
   describe('#compact', function () {
-    var foo = [1, 2, undefined, 3];
+    var foo = [1, 2, undefined, 3],
         bar = foo.compact;
 
     it('should remove all undefined values', function () {
@@ -43,6 +46,40 @@ describe('Arrays', function () {
     it('should not alter the original array', function () {
       a1.should.deep.equal([]);
       a2.should.deep.equal([1, 2, 3]);
+    });
+  });
+
+  describe('#first', function () {
+    var foo = ['z', 'y', 'x'];
+
+    it('should return the first element of the array', function () {
+      expect(foo.first).to.equal('z');
+    });
+
+    it('should not alter the original array', function () {
+      expect(foo.first).to.equal('z');
+      assert.deepEqual(foo, ['z', 'y', 'x']);
+    });
+
+    it('should return undefined on empty arrays', function () {
+      expect([].first).to.be.undefined;
+    });
+  });
+
+  describe('#last', function () {
+    var foo = ['a', 'b', 'c'];
+
+    it('should return the last element of the array', function () {
+      expect(foo.last).to.equal('c');
+    });
+
+    it('should not alter the original array', function () {
+      expect(foo.last).to.equal('c');
+      assert.deepEqual(foo, ['a', 'b', 'c']);
+    });
+
+    it('should return undefined on empty arrays', function () {
+      expect([].last).to.be.undefined;
     });
   });
 
@@ -106,8 +143,8 @@ describe('Arrays', function () {
     });
   });
 
-  // Major methods
-
+});
+describe('Arrays::MajorMethods', function () {
   describe('#assoc()', function () {
     var foo = [{a: 1}, 'bar', {b: 2}, {b: 4}],
         bar = foo.assoc('b');
@@ -118,6 +155,30 @@ describe('Arrays', function () {
 
     it('should not alter the original array', function () {
       assert.deepEqual(foo, [{a: 1}, 'bar', {b: 2}, {b: 4}]);
+    });
+  });
+
+  describe('#at()', function () {
+    var foo = ['a', 'b', 'c'];
+
+    it('should return the value at the specified index', function () {
+      expect(foo.at(2)).to.equal('c');
+      expect(foo.at(1)).to.equal('b');
+      expect(foo.at(0)).to.equal('a');
+    });
+
+    it('should calculate from the end of self, if index is negative', function () {
+      expect(foo.at(-1)).to.equal('c');
+      expect(foo.at(-2)).to.equal('b');
+      expect(foo.at(-3)).to.equal('a');
+    });
+
+    it('should return the first element if no index given', function () {
+      expect(foo.at()).to.equal('a');
+    });
+
+    it('should not alter the original array', function () {
+      assert.deepEqual(foo, ['a', 'b', 'c']);
     });
   });
 

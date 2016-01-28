@@ -1,13 +1,16 @@
-var chai = require('chai'),
-  assert = chai.assert,
-  expect = chai.expect,
-  should = chai.should();
+/* globals describe, it */
+/* jshint -W030 */
+
+var
+chai   = require('chai'),
+assert = chai.assert,
+expect = chai.expect;
+
+chai.should();
 
 require('../');
 
-describe('Numbers', function () {
-  // Minor methods
-
+describe('Numbers::MinorMethods', function () {
   var zero = 0,
       one = 1,
       neg = -5,
@@ -102,9 +105,9 @@ describe('Numbers', function () {
     });
 
     it('should throw TypeError if self is not integer value', function () {
-      expect(function () {f.next}).to.throw(TypeError);
-      expect(function () {NaN.next}).to.throw(TypeError);
-      expect(function () {Infinity.next}).to.throw(TypeError);
+      expect(function () { return f.next; }).to.throw(TypeError);
+      expect(function () { return NaN.next; }).to.throw(TypeError);
+      expect(function () { return Infinity.next; }).to.throw(TypeError);
     });
 
     it('should not effect the original value', function () {
@@ -147,9 +150,9 @@ describe('Numbers', function () {
     });
 
     it('should throw TypeError if self is not integer value', function () {
-      expect(function () {f.pred}).to.throw(TypeError);
-      expect(function () {NaN.pred}).to.throw(TypeError);
-      expect(function () {Infinity.pred}).to.throw(TypeError);
+      expect(function () { return f.pred; }).to.throw(TypeError);
+      expect(function () { return NaN.pred;}).to.throw(TypeError);
+      expect(function () { return Infinity.pred; }).to.throw(TypeError);
     });
 
     it('should not effect the original value', function () {
@@ -162,8 +165,8 @@ describe('Numbers', function () {
       expect(zero.round).to.equal(0);
       expect(one.round).to.equal(1);
 
-      expect(negf.round).to.eql(-3)
-      expect(posf.round).to.eql(12)
+      expect(negf.round).to.eql(-3);
+      expect(posf.round).to.eql(12);
     });
   });
 
@@ -177,9 +180,9 @@ describe('Numbers', function () {
       expect(Infinity.zero).to.be.false;
     });
   });
+});
 
-  // Major methods
-
+describe('Numbers::MajorMethods', function () {
   describe('#downto()', function () {
     var i = 20,
         l = 15;

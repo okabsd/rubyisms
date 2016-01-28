@@ -1,13 +1,16 @@
-var chai = require('chai'),
-  assert = chai.assert,
-  expect = chai.expect,
-  should = chai.should();
+/* globals describe, it */
+/* jshint -W030 */
+
+var
+chai   = require('chai'),
+// assert = chai.assert,
+expect = chai.expect;
+
+chai.should();
 
 require('../');
 
-describe('Functions', function () {
-  // Minor methods
-
+describe('Functions::MinorMethods', function () {
   describe('#clone', function () {
     var test = function () {
       return 'hello';
@@ -16,13 +19,11 @@ describe('Functions', function () {
 
     it('should return return a copy of the function', function () {
       expect(copy.call()).to.equal('hello');
-      copy.should.not.equal(test);
     });
 
     it('should not effect the original', function () {
       expect(test.call()).to.equal('hello');
+      copy.should.not.equal(test);
     });
   });
-
-  // Major methods
 });
