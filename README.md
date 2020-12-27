@@ -38,7 +38,7 @@ $ npm install rubyisms
 
 ## Documentation
 
-Get to know the methods, [here](https://github.com/Okahyphen/rubyisms/blob/master/docs/README.md).
+Get to know the methods, [here](docs).
 
 [npm-url]: https://www.npmjs.com/package/rubyisms
 [npm-image]: http://img.shields.io/npm/v/rubyisms.svg
